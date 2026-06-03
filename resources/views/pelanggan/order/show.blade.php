@@ -125,6 +125,20 @@
                                 </span>
                             </div>
 
+                            {{-- LOKASI TOKO UNTUK PENGAMBILAN (Hanya muncul jika ambil) --}}
+                            @if(($order->tipe_penyerahan ?? 'ambil') === 'ambil')
+                                <div class="border-t border-slate-50 pt-3">
+                                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Lokasi Toko ChoiATK</p>
+                                    <div class="text-sm text-indigo-900 bg-indigo-50/80 p-4 rounded-xl border border-indigo-100 leading-relaxed flex gap-3 items-start">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 shrink-0 text-indigo-600 mt-0.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25s-7.5-4.108-7.5-11.25a7.5 7.5 0 1115 0z" />
+                                        </svg>
+                                        <p class="font-medium">Perumahan Pangauban Silih Asih Blok L-10, Jl. Mawar, Kec. Batujajar, Kab. Bandung Barat.</p>
+                                    </div>
+                                </div>
+                            @endif
+
                             @if($order->catatan)
                                 <div class="border-t border-slate-50 pt-3">
                                     <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Catatan / Alamat Pengiriman</p>
