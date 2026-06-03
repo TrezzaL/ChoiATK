@@ -27,6 +27,7 @@ class KatalogController extends Controller
             $query->where('nama', 'like', '%' . $request->search . '%');
         }
 
+        // Ambil hasil produk yang sudah difilter dan diurutkan terbaru
         $products = $query->latest()->get();
 
         return view('pelanggan.katalog', compact('products', 'categories'));

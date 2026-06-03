@@ -1,1 +1,38 @@
-*.sqlite*
+# Mengabaikan folder dependency besar (akan diurus GitHub Actions)
+/vendor
+/node_modules
+
+# Mengabaikan file sensitif
+.env
+.env.backup
+.env.production
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+
+# Mengabaikan database lokal
+*.sqlite
+*.sqlite-journal
+
+# Mengabaikan file cache & storage lokal
+/storage/*.key
+/public/hot
+/public/storage
+/storage/app/public/*
+/storage/app/private/*
+/storage/framework/cache/data/*
+/storage/framework/events/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+/storage/logs/*
+
+# Mengabaikan folder AI Assistant (seperti yang kamu tanyakan)
+/.claude
+/.cursor
+/.vscode
+
+# PENTING: Baris /public/build TIDAK ADA di sini.
+# Jika sebelumnya ada, pastikan dihapus agar hasil build Tailwind ikut ke-push.

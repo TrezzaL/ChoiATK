@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChoiATK - Toko Alat Tulis Kantor Terlengkap & Terpercaya</title>
 
-
-    <!-- Vite Assets (Includes TailwindCSS and Alpine.js) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
         body {
@@ -26,15 +26,12 @@
 </head>
 <body class="min-h-screen bg-[#F8FAFC] text-slate-800 antialiased selection:bg-blue-500 selection:text-white" x-data="{ mobileMenuOpen: false }">
 
-    <!-- NAVIGATION HEADER -->
     <header class="sticky top-0 z-50 w-full border-b border-slate-100 bg-white/80 backdrop-blur-md transition-all duration-300">
         <div class="mx-auto flex max-w-7xl items-center justify-between p-4 md:px-8">
-            <!-- Logo -->
             <a href="#" class="flex items-center gap-2.5 group">
                 <img src="{{ asset('images/logo.png') }}" alt="ChoiATK Logo" class="h-10 sm:h-14 w-auto group-hover:scale-105 transition-transform duration-300">
             </a>
 
-            <!-- Desktop Nav Menu -->
             <nav class="hidden md:flex items-center gap-8">
                 <a href="#" class="text-sm font-semibold text-blue-600 transition-colors">Home</a>
                 <a href="#katalog" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Katalog</a>
@@ -42,7 +39,6 @@
                 <a href="#testimoni" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Testimoni</a>
             </nav>
 
-            <!-- Desktop Auth Buttons -->
             <div class="hidden md:flex items-center gap-4">
                 @auth
                     @if(auth()->user()->role === 'admin')
@@ -52,7 +48,7 @@
                     @endif
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="inline-flex items-center justify-center rounded-full bg-red-50 hover:bg-red-100 text-red-600 px-5  py-2 text-sm font-semibold transition shadow-sm border border-red-100">
+                        <button type="submit" class="inline-flex items-center justify-center rounded-full bg-red-50 hover:bg-red-100 text-red-600 px-5 py-2 text-sm font-semibold transition shadow-sm border border-red-100">
                             Keluar
                         </button>
                     </form>
@@ -64,7 +60,6 @@
                 @endauth
             </div>
 
-            <!-- Mobile Menu Toggle Button -->
             <button @click="mobileMenuOpen = !mobileMenuOpen" class="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 md:hidden transition">
                 <svg x-show="!mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -75,7 +70,6 @@
             </button>
         </div>
 
-        <!-- Mobile Dropdown Nav Menu -->
         <div x-show="mobileMenuOpen" x-collapse class="border-t border-slate-100 bg-white md:hidden" style="display: none;">
             <div class="space-y-1 p-4">
                 <a href="#" @click="mobileMenuOpen = false" class="block rounded-lg px-3 py-2 text-base font-semibold text-blue-600 bg-blue-50/50">Home</a>
@@ -107,32 +101,28 @@
         </div>
     </header>
 
-    <!-- HERO SECTION -->
     <section class="relative overflow-hidden pt-12 pb-24 md:pt-16 md:pb-32 bg-gradient-to-b from-blue-50/50 via-white to-[#F8FAFC]">
         <div class="mx-auto max-w-7xl px-4 md:px-8 relative z-10 text-center">
 
-            <!-- Green Badge Promo -->
-            <div class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-100 px-4 py-1.5 mb-6 hover:scale-102 transition duration-300">
-                <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span class="text-xs font-bold text-emerald-700 tracking-wide uppercase">Cari Kebutuhan ATK Sekarang ➡️</span>
+            <div data-aos="fade-up">
+                <div class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-100 px-4 py-1.5 mb-6 hover:scale-102 transition duration-300">
+                    <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-xs font-bold text-emerald-700 tracking-wide uppercase">Cari Kebutuhan ATK Sekarang ➡️</span>
+                </div>
+
+                <h1 class="mx-auto max-w-4xl text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl md:text-6xl leading-[1.15] mb-8">
+                    <span class="text-blue-600">ATK</span> Terlengkap<br>
+                    Untuk Anda.
+                </h1>
             </div>
 
-            <!-- Hero Heading -->
-            <h1 class="mx-auto max-w-4xl text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl md:text-6xl leading-[1.15] mb-8">
-                <span class="text-blue-600">ATK</span> Terlengkap<br>
-                Untuk Anda.
-            </h1>
-
-            <!-- 3 Glassmorphic Hero Cards Grid -->
             <div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto text-left">
 
-                <!-- Card 1: Best Sale / Best Seller -->
-                <div class="glass-card rounded-[2.5rem] p-8 shadow-xl shadow-blue-100/30 flex flex-col justify-between hover:translate-y-[-4px] transition duration-300">
+                <div data-aos="fade-up" data-aos-delay="100" class="glass-card rounded-[2.5rem] p-8 shadow-xl shadow-blue-100/30 flex flex-col justify-between hover:translate-y-[-4px] transition duration-300">
                     <div>
                         <span class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-4">Best Sale</span>
 
                         <div class="space-y-6">
-                            <!-- Item 1 -->
                             <div class="group">
                                 <div class="flex justify-between items-center mb-2">
                                     <span class="font-bold text-slate-800 group-hover:text-blue-600 transition">Kertas HVS A4</span>
@@ -147,7 +137,6 @@
                                 </div>
                             </div>
 
-                            <!-- Item 2 -->
                             <div class="group">
                                 <div class="flex justify-between items-center mb-2">
                                     <span class="font-bold text-slate-800 group-hover:text-blue-600 transition">Pulpen Gel Zebra</span>
@@ -165,8 +154,7 @@
                     </div>
                 </div>
 
-                <!-- Card 2: Promo / Solusi Terpadu (Taller Middle Card) -->
-                <div class="glass-card rounded-[2.5rem] p-8 shadow-xl shadow-blue-200/40 relative border-blue-100 hover:translate-y-[-4px] transition duration-300 flex flex-col justify-between">
+                <div data-aos="fade-up" data-aos-delay="200" class="glass-card rounded-[2.5rem] p-8 shadow-xl shadow-blue-200/40 relative border-blue-100 hover:translate-y-[-4px] transition duration-300 flex flex-col justify-between">
                     <div>
                         <div class="inline-block rounded-full bg-blue-50 border border-blue-100 px-3.5 py-1 mb-6">
                             <span class="text-[10px] font-extrabold text-blue-600 uppercase tracking-widest">Dapatkan Diskon Menarik Hingga 30%</span>
@@ -177,11 +165,10 @@
                     </div>
 
                     <div class="mt-8">
-                            <a href="{{route('login')}}" class="w-full inline-flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-sm font-bold shadow-md shadow-blue-500/20 transition-all duration-300">
-                                Daftar & Beli
+                        <a href="{{route('login')}}" class="w-full inline-flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-sm font-bold shadow-md shadow-blue-500/20 transition-all duration-300">
+                            Daftar & Beli
                         </a>
 
-                        <!-- Token highlight at the bottom -->
                         <div class="mt-6 flex items-center justify-between bg-slate-50 border border-slate-100 rounded-2xl p-4">
                             <div>
                                 <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Promo Hari Ini</span>
@@ -195,12 +182,10 @@
                     </div>
                 </div>
 
-                <!-- Card 3: Penawaran Terbaik / Radial Graph -->
-                <div class="glass-card rounded-[2.5rem] p-8 shadow-xl shadow-blue-100/30 flex flex-col justify-between hover:translate-y-[-4px] transition duration-300">
+                <div data-aos="fade-up" data-aos-delay="300" class="glass-card rounded-[2.5rem] p-8 shadow-xl shadow-blue-100/30 flex flex-col justify-between hover:translate-y-[-4px] transition duration-300">
                     <div>
                         <span class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-4">Penawaran Terbaik</span>
 
-                        <!-- Radial SVG Graph -->
                         <div class="flex justify-center items-center my-4 relative">
                             <svg class="w-32 h-32 transform -rotate-90">
                                 <circle cx="64" cy="64" r="50" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
@@ -231,12 +216,10 @@
             </div>
         </div>
 
-        <!-- Decorative background blurs -->
         <div class="absolute top-[20%] left-[-10%] w-96 h-96 bg-blue-400/10 rounded-full blur-[120px] pointer-events-none"></div>
         <div class="absolute bottom-[10%] right-[-10%] w-96 h-96 bg-emerald-400/10 rounded-full blur-[120px] pointer-events-none"></div>
     </section>
 
-    <!-- LIVE PRICE LIST / DAFTAR HARGA LANGSUNG SECTION -->
     <section id="katalog" class="mx-auto max-w-7xl px-4 md:px-8 py-16"
              x-data="{
                 products: {{ json_encode($products) }},
@@ -270,12 +253,10 @@
                 }
              }" x-init="$watch('activeCategory', value => currentPage = 1); $watch('search', value => currentPage = 1)">
 
-        <div class="text-center max-w-3xl mx-auto mb-12">
-            <!-- Price List Badge -->
+        <div class="text-center max-w-3xl mx-auto mb-12" data-aos="fade-up">
             <div class="inline-block rounded-full bg-slate-100 border border-slate-200 px-4 py-1 mb-4">
                 <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Daftar Harga</span>
             </div>
-            <!-- Title & Subtitle -->
             <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900">
                 Daftar Harga Langsung
             </h2>
@@ -284,160 +265,147 @@
             </p>
         </div>
 
-        <!-- Filter Controls -->
-        <div class="flex flex-col lg:flex-row items-center justify-between gap-6 mb-8 bg-white border border-slate-100 shadow-sm p-4 rounded-3xl">
-            <!-- Tabs (Categories) -->
-            <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
-                <button @click="activeCategory = 'Semua'"
-                        :class="activeCategory === 'Semua' ? 'bg-blue-600 text-white shadow-md shadow-blue-500/10' : 'bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-100'"
-                        class="rounded-full px-5 py-2 text-xs font-bold transition duration-300">
-                    Semua
-                </button>
-                <template x-for="cat in categories" :key="cat.id">
-                    <button @click="activeCategory = cat.nama"
-                            :class="activeCategory === cat.nama ? 'bg-blue-600 text-white shadow-md shadow-blue-500/10' : 'bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-100'"
-                            class="rounded-full px-5 py-2 text-xs font-bold transition duration-300"
-                            x-text="cat.nama">
+        <div data-aos="fade-up" data-aos-delay="100">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-6 mb-8 bg-white border border-slate-100 shadow-sm p-4 rounded-3xl">
+                <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+                    <button @click="activeCategory = 'Semua'"
+                            :class="activeCategory === 'Semua' ? 'bg-blue-600 text-white shadow-md shadow-blue-500/10' : 'bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-100'"
+                            class="rounded-full px-5 py-2 text-xs font-bold transition duration-300">
+                        Semua
                     </button>
-                </template>
-            </div>
-
-            <!-- Search input -->
-            <div class="relative w-full lg:w-80">
-                <input x-model="search" type="text" placeholder="Cari Produk..."
-                       class="w-full bg-slate-50 hover:bg-slate-100/50 focus:bg-white border border-slate-200 focus:border-blue-500 rounded-full px-6 py-2.5 pl-12 text-xs font-medium outline-none transition duration-300">
-                <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.602 10.602z" />
-                    </svg>
+                    <template x-for="cat in categories" :key="cat.id">
+                        <button @click="activeCategory = cat.nama"
+                                :class="activeCategory === cat.nama ? 'bg-blue-600 text-white shadow-md shadow-blue-500/10' : 'bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-100'"
+                                class="rounded-full px-5 py-2 text-xs font-bold transition duration-300"
+                                x-text="cat.nama">
+                        </button>
+                    </template>
                 </div>
-            </div>
-        </div>
 
-        <!-- Live Price Table -->
-        <div class="overflow-hidden bg-white border border-slate-100 rounded-3xl shadow-md shadow-slate-100/50">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-blue-600 text-white text-xs font-bold uppercase tracking-wider">
-                            <th class="p-5">KATEGORI</th>
-                            <th class="p-5">PRODUK</th>
-                            <th class="p-5">HARGA</th>
-                            <th class="p-5">STATUS</th>
-                            <th class="p-5 text-center">AKSI</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100 text-xs">
-
-                        <template x-for="p in paginatedProducts" :key="p.id">
-                            <tr class="hover:bg-slate-50/50 transition duration-150">
-                                <!-- Kategori -->
-                                <td class="p-5 font-semibold text-slate-500" x-text="p.category.nama"></td>
-                                <!-- Nama Produk -->
-                                <td class="p-5 font-bold text-slate-800">
-                                    <div class="flex flex-col gap-1">
-                                        <span x-text="p.nama"></span>
-                                        <span class="text-[10px] font-normal text-slate-400" x-text="p.deskripsi || 'Tidak ada deskripsi'"></span>
-                                    </div>
-                                </td>
-                                <!-- Harga -->
-                                <td class="p-5 font-extrabold text-blue-600 text-sm" x-text="formatHarga(p.harga)"></td>
-                                <!-- Status -->
-                                <td class="p-5">
-                                    <template x-if="p.stok === 0">
-                                        <span class="inline-flex items-center rounded-full bg-red-50 px-3 py-1 text-[10px] font-bold text-red-600 border border-red-100">Habis</span>
-                                    </template>
-                                    <template x-if="p.stok > 0 && p.stok <= p.stok_minimum">
-                                        <span class="inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-[10px] font-bold text-amber-600 border border-amber-100">Menipis</span>
-                                    </template>
-                                    <template x-if="p.stok > p.stok_minimum">
-                                        <span class="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-bold text-emerald-600 border border-emerald-100">Tersedia</span>
-                                    </template>
-                                </td>
-                                <!-- Aksi -->
-                                <td class="p-5 text-center">
-                                    @auth
-                                        <template x-if="p.stok > 0">
-                                            <a :href="'{{ route('login') }}?search=' + encodeURIComponent(p.nama)"
-                                               class="inline-flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 text-xs font-bold shadow-sm shadow-blue-500/10 transition-all duration-300">
-                                                Beli Sekarang
-                                            </a>
-                                        </template>
-                                        <template x-if="p.stok === 0">
-                                            <button disabled class="inline-flex items-center justify-center rounded-full bg-slate-100 text-slate-400 px-5 py-2 text-xs font-bold border border-slate-200 cursor-not-allowed">
-                                                Habis
-                                            </button>
-                                        </template>
-                                    @else
-                                        <template x-if="p.stok > 0">
-                                            <a href="{{ route('login') }}"
-                                               class="inline-flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 text-xs font-bold shadow-sm shadow-blue-500/10 transition-all duration-300">
-                                                Beli Sekarang
-                                            </a>
-                                        </template>
-                                        <template x-if="p.stok === 0">
-                                            <button disabled class="inline-flex items-center justify-center rounded-full bg-slate-100 text-slate-400 px-5 py-2 text-xs font-bold border border-slate-200 cursor-not-allowed">
-                                                Habis
-                                            </button>
-                                        </template>
-                                    @endauth
-                                </td>
-                            </tr>
-                        </template>
-
-                        <!-- Empty State -->
-                        <template x-if="filteredProducts.length === 0">
-                            <tr>
-                                <td colspan="5" class="p-12 text-center text-slate-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 mx-auto mb-3 text-slate-300">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 012.008 1.24l.885 1.77a2.25 2.25 0 002.007 1.24h1.98a2.25 2.25 0 002.007-1.24l.885-1.77a2.25 2.25 0 012.007-1.24h3.86m-18 0h18a2.25 2.25 0 012.25 2.25v4.5A2.25 2.25 0 0121.75 21H2.25A2.25 2.25 0 010 18.75v-4.5A2.25 2.25 0 012.25 13.5z" />
-                                    </svg>
-                                    <span class="text-sm font-semibold">Produk tidak ditemukan</span>
-                                    <p class="text-[11px] mt-1">Coba gunakan kata kunci pencarian yang lain.</p>
-                                </td>
-                            </tr>
-                        </template>
-
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Table Footer & Pagination -->
-            <div x-show="filteredProducts.length > 0" class="flex items-center justify-between p-4 bg-slate-50/50 border-t border-slate-100 text-xs">
-                <span class="text-slate-400 font-medium" x-text="'Menampilkan ' + paginatedProducts.length + ' dari ' + filteredProducts.length + ' produk'"></span>
-                <div class="flex items-center gap-1.5">
-                    <button @click="prevPage" :disabled="currentPage === 1"
-                            :class="currentPage === 1 ? 'opacity-50 cursor-not-allowed bg-white border border-slate-100 text-slate-400' : 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 active:scale-95'"
-                            class="h-8 w-8 rounded-lg flex items-center justify-center font-bold shadow-sm transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                <div class="relative w-full lg:w-80">
+                    <input x-model="search" type="text" placeholder="Cari Produk..."
+                           class="w-full bg-slate-50 hover:bg-slate-100/50 focus:bg-white border border-slate-200 focus:border-blue-500 rounded-full px-6 py-2.5 pl-12 text-xs font-medium outline-none transition duration-300">
+                    <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.602 10.602z" />
                         </svg>
-                    </button>
-                    <div class="h-8 px-3 rounded-lg border border-blue-100 bg-blue-50 text-blue-600 font-extrabold flex items-center justify-center shadow-sm" x-text="currentPage"></div>
-                    <button @click="nextPage" :disabled="currentPage === totalPages"
-                            :class="currentPage === totalPages ? 'opacity-50 cursor-not-allowed bg-white border border-slate-100 text-slate-400' : 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 active:scale-95'"
-                            class="h-8 w-8 rounded-lg flex items-center justify-center font-bold shadow-sm transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                        </svg>
-                    </button>
+                    </div>
                 </div>
             </div>
 
-        </div>
+            <div class="overflow-hidden bg-white border border-slate-100 rounded-3xl shadow-md shadow-slate-100/50">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-blue-600 text-white text-xs font-bold uppercase tracking-wider">
+                                <th class="p-5">KATEGORI</th>
+                                <th class="p-5">PRODUK</th>
+                                <th class="p-5">HARGA</th>
+                                <th class="p-5">STATUS</th>
+                                <th class="p-5 text-center">AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-xs">
 
+                            <template x-for="p in paginatedProducts" :key="p.id">
+                                <tr class="hover:bg-slate-50/50 transition duration-150">
+                                    <td class="p-5 font-semibold text-slate-500" x-text="p.category.nama"></td>
+                                    <td class="p-5 font-bold text-slate-800">
+                                        <div class="flex flex-col gap-1">
+                                            <span x-text="p.nama"></span>
+                                            <span class="text-[10px] font-normal text-slate-400" x-text="p.deskripsi || 'Tidak ada deskripsi'"></span>
+                                        </div>
+                                    </td>
+                                    <td class="p-5 font-extrabold text-blue-600 text-sm" x-text="formatHarga(p.harga)"></td>
+                                    <td class="p-5">
+                                        <template x-if="p.stok === 0">
+                                            <span class="inline-flex items-center rounded-full bg-red-50 px-3 py-1 text-[10px] font-bold text-red-600 border border-red-100">Habis</span>
+                                        </template>
+                                        <template x-if="p.stok > 0 && p.stok <= p.stok_minimum">
+                                            <span class="inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-[10px] font-bold text-amber-600 border border-amber-100">Menipis</span>
+                                        </template>
+                                        <template x-if="p.stok > p.stok_minimum">
+                                            <span class="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-bold text-emerald-600 border border-emerald-100">Tersedia</span>
+                                        </template>
+                                    </td>
+                                    <td class="p-5 text-center">
+                                        @auth
+                                            <template x-if="p.stok > 0">
+                                                <a :href="'{{ route('login') }}?search=' + encodeURIComponent(p.nama)"
+                                                   class="inline-flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 text-xs font-bold shadow-sm shadow-blue-500/10 transition-all duration-300">
+                                                    Beli Sekarang
+                                                </a>
+                                            </template>
+                                            <template x-if="p.stok === 0">
+                                                <button disabled class="inline-flex items-center justify-center rounded-full bg-slate-100 text-slate-400 px-5 py-2 text-xs font-bold border border-slate-200 cursor-not-allowed">
+                                                    Habis
+                                                </button>
+                                            </template>
+                                        @else
+                                            <template x-if="p.stok > 0">
+                                                <a href="{{ route('login') }}"
+                                                   class="inline-flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 text-xs font-bold shadow-sm shadow-blue-500/10 transition-all duration-300">
+                                                    Beli Sekarang
+                                                </a>
+                                            </template>
+                                            <template x-if="p.stok === 0">
+                                                <button disabled class="inline-flex items-center justify-center rounded-full bg-slate-100 text-slate-400 px-5 py-2 text-xs font-bold border border-slate-200 cursor-not-allowed">
+                                                    Habis
+                                                </button>
+                                            </template>
+                                        @endauth
+                                    </td>
+                                </tr>
+                            </template>
+
+                            <template x-if="filteredProducts.length === 0">
+                                <tr>
+                                    <td colspan="5" class="p-12 text-center text-slate-400">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 mx-auto mb-3 text-slate-300">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 012.008 1.24l.885 1.77a2.25 2.25 0 002.007 1.24h1.98a2.25 2.25 0 002.007-1.24l.885-1.77a2.25 2.25 0 012.007-1.24h3.86m-18 0h18a2.25 2.25 0 012.25 2.25v4.5A2.25 2.25 0 0121.75 21H2.25A2.25 2.25 0 010 18.75v-4.5A2.25 2.25 0 012.25 13.5z" />
+                                        </svg>
+                                        <span class="text-sm font-semibold">Produk tidak ditemukan</span>
+                                        <p class="text-[11px] mt-1">Coba gunakan kata kunci pencarian yang lain.</p>
+                                    </td>
+                                </tr>
+                            </template>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div x-show="filteredProducts.length > 0" class="flex items-center justify-between p-4 bg-slate-50/50 border-t border-slate-100 text-xs">
+                    <span class="text-slate-400 font-medium" x-text="'Menampilkan ' + paginatedProducts.length + ' dari ' + filteredProducts.length + ' produk'"></span>
+                    <div class="flex items-center gap-1.5">
+                        <button @click="prevPage" :disabled="currentPage === 1"
+                                :class="currentPage === 1 ? 'opacity-50 cursor-not-allowed bg-white border border-slate-100 text-slate-400' : 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 active:scale-95'"
+                                class="h-8 w-8 rounded-lg flex items-center justify-center font-bold shadow-sm transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                            </svg>
+                        </button>
+                        <div class="h-8 px-3 rounded-lg border border-blue-100 bg-blue-50 text-blue-600 font-extrabold flex items-center justify-center shadow-sm" x-text="currentPage"></div>
+                        <button @click="nextPage" :disabled="currentPage === totalPages"
+                                :class="currentPage === totalPages ? 'opacity-50 cursor-not-allowed bg-white border border-slate-100 text-slate-400' : 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 active:scale-95'"
+                                class="h-8 w-8 rounded-lg flex items-center justify-center font-bold shadow-sm transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </section>
 
-    <!-- LAYANAN POPULER / SERVICES SECTION -->
     <section id="layanan" class="mx-auto max-w-7xl px-4 md:px-8 py-16">
         <div class="bg-gradient-to-br from-blue-700 via-blue-600 to-emerald-500 rounded-[3rem] p-8 md:p-16 text-white shadow-2xl relative overflow-hidden">
 
-            <div class="relative z-10 text-center max-w-3xl mx-auto">
-                <!-- Services Badge -->
+            <div class="relative z-10 text-center max-w-3xl mx-auto" data-aos="fade-up">
                 <div class="inline-block rounded-full bg-white/10 border border-white/20 px-4.5 py-1 mb-4">
                     <span class="text-xs font-bold text-white uppercase tracking-widest">Services</span>
                 </div>
-                <!-- Title & Subtitle -->
                 <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-snug">
                     Layanan <span class="text-emerald-300">Populer</span> Kami
                 </h2>
@@ -446,10 +414,8 @@
                 </p>
             </div>
 
-            <!-- Categories Grid -->
             <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 relative z-10">
-                <!-- Card 1 -->
-                <div class="bg-white text-slate-800 rounded-3xl p-8 shadow-lg hover:scale-102 transition duration-300 flex flex-col justify-between">
+                <div data-aos="fade-up" data-aos-delay="100" class="bg-white text-slate-800 rounded-3xl p-8 shadow-lg hover:scale-102 transition duration-300 flex flex-col justify-between">
                     <div>
                         <div class="h-10 w-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg mb-6">1</div>
                         <h3 class="text-xl font-bold text-slate-900 mb-2">Alat Tulis</h3>
@@ -463,8 +429,7 @@
                     </div>
                 </div>
 
-                <!-- Card 2 -->
-                <div class="bg-white text-slate-800 rounded-3xl p-8 shadow-lg hover:scale-102 transition duration-300 flex flex-col justify-between">
+                <div data-aos="fade-up" data-aos-delay="200" class="bg-white text-slate-800 rounded-3xl p-8 shadow-lg hover:scale-102 transition duration-300 flex flex-col justify-between">
                     <div>
                         <div class="h-10 w-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg mb-6">2</div>
                         <h3 class="text-xl font-bold text-slate-900 mb-2">Kertas & Buku</h3>
@@ -478,8 +443,7 @@
                     </div>
                 </div>
 
-                <!-- Card 3 -->
-                <div class="bg-white text-slate-800 rounded-3xl p-8 shadow-lg hover:scale-102 transition duration-300 flex flex-col justify-between">
+                <div data-aos="fade-up" data-aos-delay="300" class="bg-white text-slate-800 rounded-3xl p-8 shadow-lg hover:scale-102 transition duration-300 flex flex-col justify-between">
                     <div>
                         <div class="h-10 w-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg mb-6">3</div>
                         <h3 class="text-xl font-bold text-slate-900 mb-2">Peralatan Kantor</h3>
@@ -494,8 +458,7 @@
                 </div>
             </div>
 
-            <!-- Card 4 (Horizontal Banner) -->
-            <div class="mt-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+            <div data-aos="fade-up" data-aos-delay="400" class="mt-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
                 <div class="flex items-center gap-4">
                     <div class="h-12 w-12 rounded-full bg-white text-blue-600 flex items-center justify-center font-bold text-lg shrink-0">4</div>
                     <div>
@@ -513,21 +476,17 @@
                 </div>
             </div>
 
-            <!-- Background design details -->
             <div class="absolute -right-16 -top-16 w-64 h-64 bg-white/5 rounded-full pointer-events-none"></div>
             <div class="absolute -left-16 -bottom-16 w-80 h-80 bg-white/5 rounded-full pointer-events-none"></div>
         </div>
     </section>
 
-    <!-- TESTIMONIALS SECTION -->
     <section id="testimoni" class="mx-auto max-w-7xl px-4 md:px-8 py-16 bg-gradient-to-b from-[#F8FAFC] via-white to-blue-50/20">
 
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <!-- Testimonials Badge -->
+        <div class="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
             <div class="inline-block rounded-full bg-emerald-50 border border-emerald-100 px-4 py-1 mb-4">
                 <span class="text-xs font-bold text-emerald-700 uppercase tracking-widest">Testimonials</span>
             </div>
-            <!-- Title & Subtitle -->
             <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">
                 <span class="text-emerald-500">Dipercaya</span> Oleh Ribuan Orang
             </h2>
@@ -536,7 +495,6 @@
             </p>
         </div>
 
-        <!-- Testimonial Grid (with modern subtle rotations) -->
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto items-start">
 
             <!-- Card 1 (rotate-1) -->
@@ -658,15 +616,12 @@
 
     </section>
 
-    <!-- FOOTER SECTION -->
     <footer class="bg-blue-600 text-white border-t border-blue-500 pt-16 pb-8">
         <div class="mx-auto max-w-7xl px-4 md:px-8">
             <div class="grid gap-10 md:grid-cols-4 mb-12">
 
-                <!-- Col 1: Brand -->
                 <div class="md:col-span-1">
                     <a href="#" class="inline-block group mb-6">
-                        <!-- Card Putih Kecil untuk Background Logo -->
                         <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-100 group-hover:scale-105 transition-transform duration-300">
                             <img src="{{ asset('images/logo.png') }}" alt="ChoiATK Logo" class="h-10 sm:h-14 w-auto object-contain">
                         </div>
@@ -676,7 +631,6 @@
                     </p>
                 </div>
 
-                <!-- Col 2: Pembayaran (Payment Logos) -->
                 <div>
                     <h3 class="text-sm font-bold uppercase tracking-wider text-blue-100 mb-6">Pembayaran</h3>
                     <div class="flex flex-wrap gap-2">
@@ -684,7 +638,6 @@
                     </div>
                 </div>
 
-                <!-- Col 3: Layanan (Quick Links) -->
                 <div>
                     <h3 class="text-sm font-bold uppercase tracking-wider text-blue-100 mb-6">Layanan</h3>
                     <ul class="space-y-3 text-xs text-blue-100">
@@ -695,7 +648,6 @@
                     </ul>
                 </div>
 
-                <!-- Col 4: Ikuti Kami (Socials) -->
                 <div>
                     <h3 class="text-sm font-bold uppercase tracking-wider text-blue-100 mb-6">Ikuti Kami</h3>
                     <ul class="space-y-3 text-xs text-blue-100">
@@ -719,7 +671,6 @@
 
             </div>
 
-            <!-- Bottom footer -->
             <div class="border-t border-blue-500 pt-8 mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-blue-200">
                 <span>Copyright © 2026 ChoiATK. All Rights Reserved.</span>
                 <span class="font-medium">Made with ❤️ for ChoiATK Project</span>
@@ -727,5 +678,15 @@
         </div>
     </footer>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Inisialisasi AOS
+        AOS.init({
+            duration: 800,      // Durasi animasi (800ms)
+            easing: 'ease-out-cubic', // Efek easing biar pergerakannya halus banget
+            once: true,         // Animasi cuma jalan sekali
+            offset: 100,        // Mulai animasi saat elemen 100px masuk layar
+        });
+    </script>
 </body>
 </html>

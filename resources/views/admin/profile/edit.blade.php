@@ -12,7 +12,7 @@
         <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
             <x-navbar-admin/>
 
-            <main class="p-6 md:p-8">
+            <main class="p-6 md:p-8 animate-page-load">
                 <div class="max-w-2xl mx-auto space-y-6">
 
                     {{-- Header --}}

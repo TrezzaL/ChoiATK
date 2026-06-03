@@ -16,7 +16,7 @@
         {{-- Sesuaikan nama komponen navbar admin milikmu --}}
         <x-navbar-admin/>
 
-        <main class="p-6 md:p-8 space-y-6">
+        <main class="p-6 md:p-8 space-y-6 animate-page-load">
 
             {{-- Header --}}
             <div>

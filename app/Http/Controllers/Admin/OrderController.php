@@ -15,7 +15,7 @@ class OrderController extends Controller
         // Ambil semua order dengan relasi ke user dan product untuk menampilkan nama user dan nama produk di view
         $query = Order::with('user', 'product');
 
-        // 1. Terapkan filter status jika ada di request
+        // 1. Terapkan filter status jika ada di request, misal admin memilih filter "Diproses" maka hanya order dengan status diproses yang akan ditampilkan
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
@@ -29,7 +29,7 @@ class OrderController extends Controller
                 $cleanSearch = str_replace('#', '', $search);
 
                 $q->where('id', 'LIKE', "%{$cleanSearch}%")
-                  // Mencari ke dalam tabel users berdasarkan relasi
+                  // Mencari ke dalam tabel users berdasarkan relasi user_id untuk mencocokkan nama pembeli dengan input pencarian
                   ->orWhereHas('user', function($userQuery) use ($search) {
                       $userQuery->where('name', 'LIKE', "%{$search}%");
                   });
@@ -40,14 +40,15 @@ class OrderController extends Controller
         $orders = $query
             ->latest()
             ->get()
-            ->groupBy(function ($item) {    // Kelompokkan berdasarkan tanggal checkout (format Y-m-d)
+            ->groupBy(function ($item) {    // Kelompokkan berdasarkan tanggal checkout (format Y-m-d) agar semua order yang dipesan di menit yang sama akan masuk dalam 1 kelompok yang sama
                 return $item->created_at->format('Y-m-d');
             });
 
         return view('admin.orders.index', compact('orders'));
     }
 
-    public function show(Order $order)
+    // Menampilkan detail order, termasuk semua order yang termasuk dalam 1 kelompok checkout (user + menit yang sama)
+    public function show(Order $order) // route model binding otomatis mencari data order berdasarkan id yang dikirim di URL
     {
         // 1. Ambil format waktu menit pemesanan data saat ini
         $waktuSama = $order->created_at->format('Y-m-d H:i');
@@ -55,7 +56,7 @@ class OrderController extends Controller
         // 2. Cari semua orderan milik user ini yang dibeli di menit yang sama (Sistem Kelompok Keranjang)
         $groupedOrders = Order::where('user_id', $order->user_id)
             ->where('created_at', 'LIKE', $order->created_at->format('Y-m-d H:i') . '%')
-            ->with('product.category')
+            ->with('product.category') // Eager load relasi product dan category untuk menghindari N+1 problem saat menampilkan nama produk dan kategori di view
             ->get();
 
         // 3. Hitung grand total akumulasi seluruh produk di dalam keranjang checkout ini
@@ -189,9 +190,11 @@ class OrderController extends Controller
         // Validasi tambahan untuk metode penyerahan diantar dengan total harga minimal 10rb
         $totalHarga = $product->harga * $request->jumlah;
 
+
         $prefixPenyerahan = $request->tipe_penyerahan === 'antar' ? '[OFFLINE - DIANTAR]' : '[OFFLINE - DI KONTER]';
         $catatanFinal     = trim($prefixPenyerahan . ' Pembeli: ' . $request->nama_pembeli . '. ' . ($request->catatan ?? ''));
 
+        // Simpan data order ke database dengan status langsung selesai karena ini adalah transaksi offline yang dilakukan langsung oleh admin
         Order::create([
             'user_id'         => auth()->id(),
             'product_id'      => $request->product_id,
@@ -203,6 +206,7 @@ class OrderController extends Controller
             'tipe_penyerahan' => $request->tipe_penyerahan,
         ]);
 
+        // Kurangi stok produk sesuai jumlah yang dibeli
         $product->decrement('stok', $request->jumlah);
 
         return redirect()->route('admin.order.index')

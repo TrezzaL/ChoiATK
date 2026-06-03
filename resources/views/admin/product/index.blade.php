@@ -12,7 +12,7 @@
         <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
             <x-navbar-admin/>
 
-            <main class="p-6 md:p-8 space-y-6">
+            <main class="p-6 md:p-8 space-y-6 animate-page-load">
 
                 {{-- Page Header --}}
                 <div
@@ -26,267 +26,86 @@
                     }"
                     class="bg-white rounded-2xl border border-slate-100 shadow-sm p-3"
                 >
-
-    <form method="GET" class="flex flex-col md:flex-row items-center gap-2">
-
-        {{-- Search --}}
-        <div class="relative flex-1 w-full">
-
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-
-            <input
-                type="text"
-                name="search"
-                value="{{ request('search') }}"
-                placeholder="Cari produk..."
-                class="
-                    w-full
-
-                    h-10
-
-                    pl-9
-                    pr-3
-
-                    rounded-xl
-                    border border-slate-200
-
-                    text-sm
-
-                    focus:outline-none
-                    focus:ring-4
-                    focus:ring-blue-100
-                    focus:border-blue-500
-
-                    transition-all
-                "
-            >
-        </div>
-
-        {{-- Custom Dropdown --}}
-        <div class="relative w-full md:w-auto">
-
-            <input
-                type="hidden"
-                name="filter"
-                value="{{ request('filter') }}"
-                x-ref="filterInput"
-            >
-
-            <button
-                type="button"
-                @click="open = !open"
-                class="
-                    h-10
-
-                    min-w-[170px]
-
-                    px-4
-
-                    flex items-center justify-between gap-3
-
-                    bg-white
-                    border border-slate-200
-
-                    rounded-xl
-
-                    text-sm font-medium text-slate-700
-
-                    shadow-sm
-
-                    hover:border-blue-300
-                    hover:shadow-md
-
-                    active:scale-[0.98]
-
-                    transition-all duration-200
-                "
-            >
-                <span x-text="selected"></span>
-
-                <svg
-                    class="w-4 h-4 text-slate-400 transition duration-200"
-                    :class="{ 'rotate-180': open }"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    viewBox="0 0 24 24">
-
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M19 9l-7 7-7-7"/>
-                </svg>
-            </button>
-
-            {{-- Dropdown Menu --}}
-            <div
-                x-show="open"
-                @click.outside="open = false"
-
-                x-transition:enter="transition ease-out duration-150"
-                x-transition:enter-start="opacity-0 scale-95 -translate-y-1"
-                x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-
-                x-transition:leave="transition ease-in duration-100"
-                x-transition:leave-start="opacity-100 scale-100"
-                x-transition:leave-end="opacity-0 scale-95"
-
-                class="
-                    absolute
-                    top-full
-                    mt-2
-
-                    w-full
-
-                    bg-white
-                    border border-slate-100
-
-                    rounded-xl
-
-                    shadow-xl
-
-                    overflow-hidden
-
-                    z-50
-                "
-                x-cloak
-            >
-
-                <button
-                    type="button"
-                    @click="
-                        selected='Semua Produk';
-                        $refs.filterInput.value='';
-                        open=false;
-                    "
-                    class="
-                        w-full
-                        px-4 py-2.5
-
-                        text-left text-sm
-
-                        hover:bg-slate-50
-
-                        transition
-                    "
-                >
-                    Semua Produk
-                </button>
-
-                <button
-                    type="button"
-                    @click="
-                        selected='Stok Habis';
-                        $refs.filterInput.value='habis';
-                        open=false;
-                    "
-                    class="
-                        w-full
-                        px-4 py-2.5
-
-                        text-left text-sm
-
-                        hover:bg-red-50
-                        hover:text-red-600
-
-                        transition
-                    "
-                >
-                    Stok Habis
-                </button>
-
-                <button
-                    type="button"
-                    @click="
-                        selected='Stok Menipis';
-                        $refs.filterInput.value='menipis';
-                        open=false;
-                    "
-                    class="
-                        w-full
-                        px-4 py-2.5
-
-                        text-left text-sm
-
-                        hover:bg-amber-50
-                        hover:text-amber-600
-
-                        transition
-                    "
-                >
-                    Stok Menipis
-                </button>
-
-            </div>
-        </div>
-
-        {{-- Cari --}}
-        <button
-            type="submit"
-            class="
-                h-10
-
-                px-4
-
-                bg-blue-600
-                hover:bg-blue-700
-
-                active:scale-95
-
-                rounded-xl
-
-                text-sm
-                font-semibold
-                text-white
-
-                shadow-sm
-                hover:shadow-md
-
-                transition-all duration-200
-            "
-        >
-            Cari
-        </button>
-
-        {{-- Reset --}}
-        <a
-            href="{{ route('admin.product.index') }}"
-            class="
-                h-10
-
-                px-4
-
-                flex items-center
-
-                bg-slate-100
-                hover:bg-slate-200
-
-                rounded-xl
-
-                text-sm
-                font-medium
-                text-slate-700
-
-                transition-all duration-200
-            "
-        >
-            Reset
-        </a>
-
-    </form>
-</div>
+                    <form method="GET" class="flex flex-col md:flex-row items-center gap-2">
+
+                        {{-- Live Search Input --}}
+                        <div class="relative flex-1 w-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            <input
+                                type="text"
+                                name="search"
+                                value="{{ request('search') }}"
+                                placeholder="Cari produk..."
+                                {{-- Trigger Auto-Submit setelah berhenti ngetik 0.75 detik --}}
+                                @input.debounce.750ms="$el.closest('form').submit()"
+                                {{-- Trik Auto-Focus agar kursor lanjut berkedip tanpa ngulang dari depan --}}
+                                {{ request('search') ? 'autofocus onfocus="this.setSelectionRange(this.value.length, this.value.length);"' : '' }}
+                                class="w-full h-10 pl-9 pr-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all"
+                            >
+                        </div>
+
+                        {{-- Custom Dropdown Auto-Submit --}}
+                        <div class="relative w-full md:w-auto">
+                            <input type="hidden" name="filter" value="{{ request('filter') }}" x-ref="filterInput">
+
+                            <button
+                                type="button"
+                                @click="open = !open"
+                                class="h-10 min-w-[170px] px-4 flex items-center justify-between gap-3 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-700 shadow-sm hover:border-blue-300 hover:shadow-md active:scale-[0.98] transition-all duration-200"
+                            >
+                                <span x-text="selected"></span>
+                                <svg class="w-4 h-4 text-slate-400 transition duration-200" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+
+                            {{-- Dropdown Menu --}}
+                            <div
+                                x-show="open"
+                                @click.outside="open = false"
+                                x-transition:enter="transition ease-out duration-150"
+                                x-transition:enter-start="opacity-0 scale-95 -translate-y-1"
+                                x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                                x-transition:leave="transition ease-in duration-100"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-95"
+                                class="absolute top-full mt-2 w-full bg-white border border-slate-100 rounded-xl shadow-xl overflow-hidden z-50"
+                                x-cloak
+                            >
+                                <button type="button"
+                                    @click="selected='Semua Produk'; $refs.filterInput.value=''; open=false; $nextTick(() => $el.closest('form').submit());"
+                                    class="w-full px-4 py-2.5 text-left text-sm hover:bg-slate-50 transition">
+                                    Semua Produk
+                                </button>
+
+                                <button type="button"
+                                    @click="selected='Stok Habis'; $refs.filterInput.value='habis'; open=false; $nextTick(() => $el.closest('form').submit());"
+                                    class="w-full px-4 py-2.5 text-left text-sm hover:bg-red-50 hover:text-red-600 transition">
+                                    Stok Habis
+                                </button>
+
+                                <button type="button"
+                                    @click="selected='Stok Menipis'; $refs.filterInput.value='menipis'; open=false; $nextTick(() => $el.closest('form').submit());"
+                                    class="w-full px-4 py-2.5 text-left text-sm hover:bg-amber-50 hover:text-amber-600 transition">
+                                    Stok Menipis
+                                </button>
+                            </div>
+                        </div>
+
+                        {{-- Tombol Reset (Hanya muncul kalau ada pencarian atau filter aktif) --}}
+                        @if(request('search') || request('filter'))
+                            <a
+                                href="{{ route('admin.product.index') }}"
+                                class="h-10 px-4 flex items-center justify-center bg-red-50 hover:bg-red-100 rounded-xl text-sm font-bold text-red-600 border border-red-100 transition-all duration-200"
+                            >
+                                Reset Filter
+                            </a>
+                        @endif
+
+                    </form>
+                </div>
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
                         <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Daftar Produk ATK</h2>

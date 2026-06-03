@@ -20,8 +20,8 @@ class OrderController extends Controller
         return view('pelanggan.order.create', compact('product'));
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) // Method untuk menyimpan data order baru ke database setelah pelanggan submit form buat order
+    { // request adalah data yang dikirim dari form buat order, termasuk product_id, jumlah, catatan, metode_bayar, dan tipe_penyerahan yang baru ditambahkan di form order oleh pelanggan
         // 1. Validasi request termasuk tipe_penyerahan
         $request->validate([
             'product_id'     => 'required|exists:products,id',

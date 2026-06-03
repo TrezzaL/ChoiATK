@@ -14,7 +14,7 @@
         <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
             <x-navbar-pelanggan/>
 
-            <main class="p-6 md:p-8 space-y-6">
+            <main class="p-6 md:p-8 space-y-6 animate-page-load">
 
                 {{-- Header --}}
                 <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
@@ -31,41 +31,119 @@
                     </a>
                 </div>
 
-                {{-- Filter & Search --}}
+                {{-- Filter & Search Form --}}
                 <form method="GET" action="{{ route('pelanggan.katalog') }}"
                     class="bg-white rounded-2xl border border-slate-100 p-4 shadow-sm flex gap-3 flex-wrap items-center">
 
-                    <div class="relative flex-1 min-w-48">
+                    {{-- Kolom Input Search (Live Search dengan Alpine.js) --}}
+                    <div class="relative flex-1 min-w-48" x-data>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
                         <input type="text" name="search"
                             value="{{ request('search') }}"
                             placeholder="Cari produk ATK..."
+                            @input.debounce.750ms="$el.closest('form').submit()"
+                            {{ request('search') ? 'autofocus onfocus="this.setSelectionRange(this.value.length, this.value.length);"' : '' }}
                             class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm transition">
                     </div>
 
-                    <div class="min-w-48">
-                        <select name="category_id"
-                            class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white transition">
-                            <option value="">Semua Kategori</option>
+                    {{-- Filter Kategori (Custom Dropdown Alpine.js) --}}
+                    @php
+                        $selectedCategoryId = request('category_id', '');
+                        $selectedCategoryName = 'Semua Kategori';
+
+                        // Cek apakah ada kategori yang sedang di-filter di URL
+                        if ($selectedCategoryId) {
+                            $currentCat = $categories->firstWhere('id', $selectedCategoryId);
+                            if ($currentCat) {
+                                $selectedCategoryName = $currentCat->nama;
+                            }
+                        }
+                    @endphp
+
+                    <div class="relative min-w-48"
+                        x-data="{
+                            open: false,
+                            selectedId: '{{ $selectedCategoryId }}',
+                            selectedName: '{{ $selectedCategoryName }}',
+                            selectOption(id, name) {
+                                this.selectedId = id;
+                                this.selectedName = name;
+                                this.open = false;
+
+                                // Auto-submit form begitu kategori dipilih
+                                $nextTick(() => {
+                                    $el.closest('form').submit();
+                                });
+                            }
+                        }"
+                        @click.away="open = false">
+
+                        {{-- Input Hidden pengganti <select> untuk dikirim ke Controller --}}
+                        <input type="hidden" name="category_id" :value="selectedId">
+
+                        {{-- Tombol Utama Dropdown --}}
+                        <button type="button"
+                                @click="open = !open"
+                                class="h-[42px] w-full px-4 flex items-center justify-between rounded-xl border text-sm font-medium bg-white transition-all duration-200 focus:outline-none"
+                                :class="open ? 'border-blue-500 ring-4 ring-blue-100/50 text-slate-900' : 'border-slate-200 text-slate-700 hover:border-blue-300'">
+
+                            <span x-text="selectedName"></span>
+
+                            {{-- Ikon Panah Berputar --}}
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="w-4 h-4 text-slate-400 transition-transform duration-200"
+                                :class="open ? 'rotate-180 text-blue-500' : ''"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        {{-- List Menu Pilihan Kategori --}}
+                        <div x-show="open"
+                            x-transition:enter="transition ease-out duration-150"
+                            x-transition:enter-start="opacity-0 scale-95 -translate-y-2"
+                            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                            x-transition:leave="transition ease-in duration-100"
+                            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                            x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
+                            class="absolute left-0 z-30 mt-2 w-full bg-white rounded-xl border border-slate-100 shadow-xl py-1 overflow-hidden focus:outline-none"
+                            style="display: none;">
+
+                            {{-- Opsi Default: Semua Kategori --}}
+                            <button type="button"
+                                    @click="selectOption('', 'Semua Kategori')"
+                                    class="w-full text-left px-4 py-2.5 text-sm transition-colors flex items-center justify-between"
+                                    :class="selectedId === '' ? 'bg-blue-50 text-blue-700 font-bold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'">
+                                <span>Semua Kategori</span>
+                                <svg x-show="selectedId === ''" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </button>
+
+                            {{-- Perulangan Data Kategori dari Database --}}
                             @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
-                                    {{ $category->nama }}
-                                </option>
+                                <button type="button"
+                                        @click="selectOption('{{ $category->id }}', '{{ $category->nama }}')"
+                                        class="w-full text-left px-4 py-2.5 text-sm transition-colors flex items-center justify-between"
+                                        :class="selectedId == '{{ $category->id }}' ? 'bg-blue-50 text-blue-700 font-bold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'">
+                                    <span>{{ $category->nama }}</span>
+
+                                    {{-- Ikon Ceklis Opsi Terpilih --}}
+                                    <svg x-show="selectedId == '{{ $category->id }}'" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="display: none;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </button>
                             @endforeach
-                        </select>
+                        </div>
                     </div>
 
-                    <button type="submit"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition shadow-md shadow-blue-500/20">
-                        Cari
-                    </button>
-
+                    {{-- Tombol Reset (Hanya Muncul Jika Sedang Mencari/Filter) --}}
                     @if(request('search') || request('category_id'))
                         <a href="{{ route('pelanggan.katalog') }}"
-                            class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 py-2.5 rounded-xl text-sm font-semibold transition">
-                            Reset
+                            class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2.5 rounded-xl text-sm font-bold border border-red-100 transition">
+                            Hapus Filter
                         </a>
                     @endif
 

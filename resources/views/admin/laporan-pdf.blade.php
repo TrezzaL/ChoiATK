@@ -49,17 +49,9 @@
 
     <div class="info">
         <p><strong>Tanggal Cetak:</strong> {{ now()->format('d F Y H:i') }}</p>
-
-        <p>
-            <strong>Filter:</strong>
-            @if(request('filter') == 'bulan')
-                30 Hari Terakhir
-            @else
-                Semua Data
-            @endif
-        </p>
+        <p><strong>Cakupan Data:</strong> 30 Hari Terakhir</p>
     </div>
-
+    
     <hr>
 
     <h2>Ringkasan Penjualan</h2>
@@ -170,10 +162,10 @@
 
     <p>
         <strong>Keterangan:</strong><br>
+        - Laporan ini hanya memuat rekapitulasi data dalam 30 hari terakhir.<br>
         - Produk Terlaris adalah produk dengan jumlah transaksi selesai terbanyak.<br>
         - Produk Kurang Laku adalah produk yang pernah terjual tetapi jumlah transaksinya rendah.<br>
-        - Produk Belum Pernah Diorder adalah produk yang belum memiliki transaksi sama sekali.<br>
-        - Data pada laporan ini diambil dari transaksi yang tersimpan pada sistem ChoiATK.
+        - Produk Belum Pernah Diorder adalah produk yang belum memiliki transaksi sama sekali dalam periode ini.
     </p>
 
 </body>

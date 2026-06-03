@@ -14,7 +14,7 @@
     <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
         <x-navbar-pelanggan/>
 
-        <main class="p-6 md:p-8 space-y-6">
+        <main class="p-6 md:p-8 space-y-6 animate-page-load">
 
             {{-- Header --}}
             <div>

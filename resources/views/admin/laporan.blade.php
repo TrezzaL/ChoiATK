@@ -12,215 +12,66 @@
         <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
             <x-navbar-admin/>
 
-            <main class="p-6 md:p-8 space-y-8">
+            <main class="p-6 md:p-8 space-y-8 animate-page-load">
 
                 {{-- Page Header --}}
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
-                {{-- Judul --}}
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-900 tracking-tight">
-                        Laporan Toko
-                    </h2>
-                    <p class="text-sm text-slate-500 mt-1">
-                        Pantau performa penjualan dan statistik produk ChoiATK.
-                    </p>
+                    {{-- Judul --}}
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">
+                            Laporan Toko
+                        </h2>
+                        <p class="text-sm text-slate-500 mt-1">
+                            Pantau performa penjualan dan statistik produk ChoiATK.
+                        </p>
+                    </div>
+
+                    {{-- Action Area --}}
+                    <div class="flex items-center gap-3">
+                        {{-- Export PDF --}}
+                        <a href="{{ route('admin.laporan.pdf') }}"
+                        class="
+                                group
+                                inline-flex
+                                items-center
+                                gap-2
+                                px-5 py-3
+                                rounded-2xl
+                                bg-gradient-to-r
+                                from-red-600
+                                to-red-700
+                                text-white
+                                font-semibold
+                                shadow-lg
+                                shadow-red-500/20
+                                hover:shadow-xl
+                                hover:shadow-red-500/30
+                                hover:-translate-y-0.5
+                                active:scale-95
+                                transition-all
+                                duration-200
+                        ">
+                            {{-- Icon --}}
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="2"
+                                stroke="currentColor"
+                                class="w-5 h-5 transition-transform duration-200 group-hover:-translate-y-0.5">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M19.5 14.25v4.125c0 .621-.504 1.125-1.125 1.125H5.625A1.125 1.125 0 014.5 18.375V5.625C4.5 5.004 5.004 4.5 5.625 4.5H12m0 0l3 3m-3-3v3h3m-3 6h6"/>
+                            </svg>
+
+                            <span>Export PDF (30 Hari Terakhir)</span>
+
+                            <span class="px-2 py-0.5 text-[10px] rounded-full bg-white/20">
+                                PDF
+                            </span>
+                        </a>
+                    </div>
                 </div>
-
-                {{-- Action Area --}}
-                <div class="flex items-center gap-3">
-
-                    {{-- Filter --}}
-                    <form method="GET" x-data="{ open: false }">
-                        <div class="relative">
-                            {{-- Button --}}
-                            <button
-                                type="button"
-                                @click="open = !open"
-                                class="
-                                    h-12 min-w-[190px]
-
-                                    flex items-center justify-between
-
-                                    px-4
-
-                                    bg-white
-                                    border border-slate-200
-                                    rounded-xl
-
-                                    text-sm font-medium text-slate-700
-
-                                    shadow-sm
-
-                                    hover:border-blue-400
-                                    hover:shadow-md
-
-                                    active:scale-[0.98]
-
-                                    transition-all duration-200
-                                "
-                            >
-                                <span>
-                                    @if(request('filter') == 'bulan')
-                                        30 Hari Terakhir
-                                    @else
-                                        Semua Data
-                                    @endif
-                                </span>
-
-                                <svg
-                                    class="w-4 h-4 text-slate-400 transition-transform duration-200"
-                                    :class="{ 'rotate-180': open }"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M19 9l-7 7-7-7"
-                                    />
-                                </svg>
-                            </button>
-
-                            {{-- Dropdown --}}
-                            <div
-                                x-show="open"
-                                @click.outside="open = false"
-
-                                x-transition:enter="transition ease-out duration-200"
-                                x-transition:enter-start="opacity-0 scale-95"
-                                x-transition:enter-end="opacity-100 scale-100"
-
-                                x-transition:leave="transition ease-in duration-150"
-                                x-transition:leave-start="opacity-100 scale-100"
-                                x-transition:leave-end="opacity-0 scale-95"
-
-                                class="
-                                    absolute
-                                    z-50
-                                    mt-2
-                                    w-full
-
-                                    bg-white
-                                    border border-slate-200
-                                    rounded-xl
-
-                                    shadow-xl
-
-                                    overflow-hidden
-                                "
-                                style="display:none;"
-                            >
-
-                                {{-- Semua Data --}}
-                                <button
-                                    type="submit"
-                                    name="filter"
-                                    value="all"
-                                    class="
-                                        w-full
-                                        text-left
-
-                                        px-4 py-3
-
-                                        text-sm
-                                        text-slate-700
-
-                                        hover:bg-blue-50
-                                        hover:text-blue-700
-
-                                        transition
-                                    "
-                                >
-                                    Semua Data
-                                </button>
-
-                                {{-- 30 Hari --}}
-                                <button
-                                    type="submit"
-                                    name="filter"
-                                    value="bulan"
-                                    class="
-                                        w-full
-                                        text-left
-
-                                        px-4 py-3
-
-                                        text-sm
-                                        text-slate-700
-
-                                        hover:bg-blue-50
-                                        hover:text-blue-700
-
-                                        transition
-                                    "
-                                >
-                                    30 Hari Terakhir
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </form>
-
-                    {{-- Export PDF --}}
-                    <a href="{{ route('admin.laporan.pdf') }}"
-                    class="
-                            group
-                            inline-flex
-                            items-center
-                            gap-2
-
-                            px-5 py-3
-
-                            rounded-2xl
-
-                            bg-gradient-to-r
-                            from-red-600
-                            to-red-700
-
-                            text-white
-                            font-semibold
-
-                            shadow-lg
-                            shadow-red-500/20
-
-                            hover:shadow-xl
-                            hover:shadow-red-500/30
-                            hover:-translate-y-0.5
-
-                            active:scale-95
-
-                            transition-all
-                            duration-200
-                    ">
-
-                        {{-- Icon --}}
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="2"
-                            stroke="currentColor"
-                            class="w-5 h-5 transition-transform duration-200 group-hover:-translate-y-0.5">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M19.5 14.25v4.125c0 .621-.504 1.125-1.125 1.125H5.625A1.125 1.125 0 014.5 18.375V5.625C4.5 5.004 5.004 4.5 5.625 4.5H12m0 0l3 3m-3-3v3h3m-3 6h6"/>
-                        </svg>
-
-                        <span>Export PDF</span>
-
-                        <span class="px-2 py-0.5 text-[10px] rounded-full bg-white/20">
-                            PDF
-                        </span>
-
-                    </a>
-
-                </div>
-
-            </div>
 
                 {{-- Stats Summary Cards --}}
                 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">

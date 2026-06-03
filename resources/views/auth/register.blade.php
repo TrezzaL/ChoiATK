@@ -111,7 +111,7 @@
                     </div>
 
                     <!-- Password Group -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
                         <!-- Password -->
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1.5">Password</label>
@@ -136,16 +136,45 @@
 
                             {{-- Bar Indikator Kelemahan Password --}}
                             <div class="mt-2" x-show="password.length > 0" x-transition>
-                                <div class="flex items-center justify-between text-[11px] font-semibold mb-1">
+                                <div class="flex items-center justify-between text-[11px] font-semibold mb-1.5">
                                     <span class="text-slate-400">Keamanan:</span>
                                     <span :class="strength.text" x-text="strength.label"></span>
                                 </div>
-                                <div class="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                                <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mb-3">
                                     <div class="h-full transition-all duration-300" :class="strength.color + ' ' + strength.width"></div>
                                 </div>
                             </div>
 
-                            @error('password')<p class="text-red-500 text-xs mt-1.5 font-medium">{{ $message }}</p>@enderror
+                            {{-- Daftar Syarat Password (Interaktif) --}}
+                            <div class="mt-2.5 space-y-1.5">
+                                <p class="text-[11px] font-semibold text-slate-500 mb-1">Password yang kuat harus memuat:</p>
+
+                                <div class="flex items-center gap-2 text-[11px]" :class="password.length >= 8 ? 'text-emerald-600 font-medium' : 'text-slate-400'">
+                                    <svg x-show="password.length >= 8" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                    <svg x-show="password.length < 8" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9" /></svg>
+                                    <span>Minimal 8 karakter</span>
+                                </div>
+
+                                <div class="flex items-center gap-2 text-[11px]" :class="/[A-Z]/.test(password) && /[a-z]/.test(password) ? 'text-emerald-600 font-medium' : 'text-slate-400'">
+                                    <svg x-show="/[A-Z]/.test(password) && /[a-z]/.test(password)" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                    <svg x-show="!(/[A-Z]/.test(password) && /[a-z]/.test(password))" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9" /></svg>
+                                    <span>Huruf kapital & kecil (A-z)</span>
+                                </div>
+
+                                <div class="flex items-center gap-2 text-[11px]" :class="/[0-9]/.test(password) ? 'text-emerald-600 font-medium' : 'text-slate-400'">
+                                    <svg x-show="/[0-9]/.test(password)" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                    <svg x-show="!/[0-9]/.test(password)" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9" /></svg>
+                                    <span>Memuat angka (0-9)</span>
+                                </div>
+
+                                <div class="flex items-center gap-2 text-[11px]" :class="/[^A-Za-z0-9]/.test(password) ? 'text-emerald-600 font-medium' : 'text-slate-400'">
+                                    <svg x-show="/[^A-Za-z0-9]/.test(password)" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                    <svg x-show="!/[^A-Za-z0-9]/.test(password)" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9" /></svg>
+                                    <span>Karakter unik (@, #, $, dll)</span>
+                                </div>
+                            </div>
+
+                            @error('password')<p class="text-red-500 text-xs mt-2 font-medium">{{ $message }}</p>@enderror
                         </div>
 
                         <!-- Konfirmasi Password -->

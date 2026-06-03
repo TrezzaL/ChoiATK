@@ -1,0 +1,71 @@
+name: Deploy to Hosting
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: gd, mbstring, xml, zip, pdo, pdo_mysql
+          coverage: none
+
+      - name: Install Composer Dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Build Assets & Clean
+        run: |
+          npm ci
+          npm run build
+          rm -rf node_modules/
+
+      - name: Create deployment zip
+        run: |
+          zip -r deploy.zip . \
+            --exclude=".git/*" \
+            --exclude=".github/*" \
+            --exclude=".env" \
+            --exclude=".env.production" \
+            --exclude="README.md" \
+            --exclude="deploy.zip"
+
+      - name: Upload files via FTP
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          curl -T public/deploy.php "ftp://$FTP_HOST/public/deploy.php" \
+            --user "$FTP_USER:$FTP_PASS" \
+            --ftp-create-dirs --retry 3 --retry-delay 5 --max-time 120
+          curl -T deploy.zip "ftp://$FTP_HOST/deploy.zip" \
+            --user "$FTP_USER:$FTP_PASS" \
+            --ftp-create-dirs --retry 3 --retry-delay 5 --max-time 300
+
+      - name: Trigger extraction on server
+        run: |
+          HTTP_STATUS=$(curl -s -o /tmp/response.txt -w "%{http_code}" \
+            "http://choi-atk.trezzal.my.id/deploy.php?token=${{ secrets.DEPLOY_TOKEN }}")
+          echo "--- Server Response ---"
+          cat /tmp/response.txt
+          echo ""
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "Extraction failed! HTTP $HTTP_STATUS"; exit 1
+          fi
+          echo "Deploy successful!"

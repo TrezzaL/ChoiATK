@@ -16,7 +16,7 @@
             {{-- Top Navbar --}}
             <x-navbar-admin/>
 
-            <main class="p-6 md:p-8 space-y-6">
+            <main class="p-6 md:p-8 space-y-6 animate-page-load">
 
                 {{-- Filter & Search Panel --}}
                 <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
@@ -102,26 +102,31 @@
                                 </div>
                             </div>
 
-                            {{-- RIGHT SIDE: BARU! Input Search Pembeli / ID Pesanan --}}
-                            <div class="flex items-center gap-2 w-full md:w-auto min-w-[280px]">
+                            {{-- RIGHT SIDE: BARU! Input Search Pembeli / ID Pesanan (Live Search Alpine.js) --}}
+                            <div class="flex items-center gap-2 w-full md:w-auto min-w-[280px]" x-data>
                                 <div class="relative w-full">
                                     <input type="text"
-                                           name="search"
-                                           value="{{ request('search') }}"
-                                           placeholder="Cari nama pembeli atau ID order..."
-                                           class="w-full h-10 pl-10 pr-4 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all text-slate-700">
+                                        name="search"
+                                        value="{{ request('search') }}"
+                                        placeholder="Cari nama pembeli atau ID order..."
+                                        {{-- Trigger Auto-Submit setelah ngetik --}}
+                                        @input.debounce.750ms="$el.closest('form').submit()"
+                                        {{-- Trik Auto-Focus menjaga kursor di akhir huruf --}}
+                                        {{ request('search') ? 'autofocus onfocus="this.setSelectionRange(this.value.length, this.value.length);"' : '' }}
+                                        class="w-full h-10 pl-10 pr-4 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all text-slate-700">
+
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                                         </svg>
                                     </div>
                                 </div>
-                                <button type="submit" class="h-10 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md shadow-blue-500/10 transition shrink-0">
-                                    Cari
-                                </button>
 
+                                {{-- Tombol Reset (Hanya Muncul Jika Sedang Mencari/Filter) --}}
                                 @if(request('status') || request('search'))
-                                <a href="{{ route('admin.order.index') }}" class="h-10 px-3 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-500 transition shrink-0" title="Reset Semua Filter">
+                                <a href="{{ route('admin.order.index') }}"
+                                class="h-10 px-4 flex items-center justify-center rounded-xl bg-red-50 hover:bg-red-100 text-xs font-bold text-red-600 border border-red-100 transition shrink-0"
+                                title="Reset Semua Filter">
                                     Reset
                                 </a>
                                 @endif

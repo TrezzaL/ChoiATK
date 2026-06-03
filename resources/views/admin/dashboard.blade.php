@@ -20,7 +20,7 @@
             <x-navbar-admin/>
 
             {{-- Dashboard Content --}}
-            <main class="p-6 md:p-8 space-y-8 flex-1">
+            <main class="p-6 md:p-8 space-y-8 flex-1 animate-page-load">
 
                 {{-- Welcome Header --}}
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

@@ -12,7 +12,7 @@
         <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
             <x-navbar-pelanggan/>
 
-            <main class="p-6 md:p-8 space-y-6">
+            <main class="p-6 md:p-8 space-y-6 animate-page-load">
 
                 {{-- Hero Greeting --}}
                 <div class="relative bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-7 overflow-hidden">
@@ -42,76 +42,80 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
 
                     {{-- Total Order --}}
-                    <div class="relative bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden group">
+                    <a href="{{ route('pelanggan.order.index') }}" class="block relative bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden group cursor-pointer">
                         <div class="absolute inset-y-0 left-0 w-1.5 bg-blue-500 rounded-l-2xl"></div>
                         <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-blue-50 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 scale-50 group-hover:scale-100 pointer-events-none"></div>
 
-                        <div class="relative flex justify-between items-center">
+                        <div class="relative flex justify-between items-start gap-3">
                             <div class="flex flex-col">
                                 <p class="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-1.5">Total Order</p>
-                                <p class="text-3xl font-black text-slate-900 tabular-nums leading-none">{{ $totalOrder }}</p>
+                                <p class="text-3xl font-black text-slate-900 tabular-nums leading-none mb-2.5">{{ $totalOrder }}</p>
+                                <p class="text-[11px] font-medium text-slate-500 leading-relaxed pr-2">Total semua pesanan yang sudah pernah kamu pesan.</p>
                             </div>
-                            <div class="w-12 h-12 bg-blue-50/80 rounded-xl flex items-center justify-center group-hover:bg-white transition-colors duration-300 shadow-inner group-hover:shadow-sm border border-transparent group-hover:border-blue-100 shrink-0">
+                            <div class="w-12 h-12 bg-blue-50/80 rounded-xl flex items-center justify-center group-hover:bg-white transition-colors duration-300 shadow-inner group-hover:shadow-sm border border-transparent group-hover:border-blue-100 shrink-0 mt-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-blue-600 group-hover:scale-110 transition-transform duration-300">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                 </svg>
                             </div>
                         </div>
-                    </div>
+                    </a>
 
                     {{-- Menunggu --}}
-                    <div class="relative bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden group">
+                    <a href="{{ route('pelanggan.order.index') }}" class="block relative bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden group cursor-pointer">
                         <div class="absolute inset-y-0 left-0 w-1.5 bg-amber-400 rounded-l-2xl"></div>
                         <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-amber-50 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 scale-50 group-hover:scale-100 pointer-events-none"></div>
 
-                        <div class="relative flex justify-between items-center">
+                        <div class="relative flex justify-between items-start gap-3">
                             <div class="flex flex-col">
                                 <p class="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-1.5">Menunggu</p>
-                                <p class="text-3xl font-black text-slate-900 tabular-nums leading-none">{{ $menungguKonfirmasi }}</p>
+                                <p class="text-3xl font-black text-slate-900 tabular-nums leading-none mb-2.5">{{ $menungguKonfirmasi }}</p>
+                                <p class="text-[11px] font-medium text-slate-500 leading-relaxed pr-2">Pesanan yang belum di-ACC atau dikonfirmasi oleh admin.</p>
                             </div>
-                            <div class="w-12 h-12 bg-amber-50/80 rounded-xl flex items-center justify-center group-hover:bg-white transition-colors duration-300 shadow-inner group-hover:shadow-sm border border-transparent group-hover:border-amber-100 shrink-0">
+                            <div class="w-12 h-12 bg-amber-50/80 rounded-xl flex items-center justify-center group-hover:bg-white transition-colors duration-300 shadow-inner group-hover:shadow-sm border border-transparent group-hover:border-amber-100 shrink-0 mt-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-amber-500 group-hover:scale-110 transition-transform duration-300">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
                         </div>
-                    </div>
+                    </a>
 
-                    {{-- Diproses --}}
-                    <div class="relative bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden group">
+                    {{-- Diproses -> Siap Diambil/Diantar --}}
+                    <a href="{{ route('pelanggan.order.index') }}" class="block relative bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden group cursor-pointer">
                         <div class="absolute inset-y-0 left-0 w-1.5 bg-indigo-500 rounded-l-2xl"></div>
                         <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-indigo-50 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 scale-50 group-hover:scale-100 pointer-events-none"></div>
 
-                        <div class="relative flex justify-between items-center">
+                        <div class="relative flex justify-between items-start gap-3">
                             <div class="flex flex-col">
-                                <p class="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-1.5">Diproses</p>
-                                <p class="text-3xl font-black text-slate-900 tabular-nums leading-none">{{ $diproses }}</p>
+                                <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1.5 leading-tight">Siap Diambil/<br>Diantar</p>
+                                <p class="text-3xl font-black text-slate-900 tabular-nums leading-none mb-2.5 mt-0.5">{{ $diproses }}</p>
+                                <p class="text-[11px] font-medium text-slate-500 leading-relaxed pr-2">Pesanan sedang disiapkan, dikirim, atau siap diambil.</p>
                             </div>
-                            <div class="w-12 h-12 bg-indigo-50/80 rounded-xl flex items-center justify-center group-hover:bg-white transition-colors duration-300 shadow-inner group-hover:shadow-sm border border-transparent group-hover:border-indigo-100 shrink-0">
+                            <div class="w-12 h-12 bg-indigo-50/80 rounded-xl flex items-center justify-center group-hover:bg-white transition-colors duration-300 shadow-inner group-hover:shadow-sm border border-transparent group-hover:border-indigo-100 shrink-0 mt-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-indigo-600 group-hover:scale-110 transition-transform duration-300">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958" />
                                 </svg>
                             </div>
                         </div>
-                    </div>
+                    </a>
 
                     {{-- Selesai --}}
-                    <div class="relative bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden group">
+                    <a href="{{ route('pelanggan.order.index') }}" class="block relative bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden group cursor-pointer">
                         <div class="absolute inset-y-0 left-0 w-1.5 bg-emerald-500 rounded-l-2xl"></div>
                         <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-emerald-50 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 scale-50 group-hover:scale-100 pointer-events-none"></div>
 
-                        <div class="relative flex justify-between items-center">
+                        <div class="relative flex justify-between items-start gap-3">
                             <div class="flex flex-col">
                                 <p class="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-1.5">Selesai</p>
-                                <p class="text-3xl font-black text-slate-900 tabular-nums leading-none">{{ $selesai }}</p>
+                                <p class="text-3xl font-black text-slate-900 tabular-nums leading-none mb-2.5">{{ $selesai }}</p>
+                                <p class="text-[11px] font-medium text-slate-500 leading-relaxed pr-2">Produk yang sudah berhasil kamu terima dan dibayar.</p>
                             </div>
-                            <div class="w-12 h-12 bg-emerald-50/80 rounded-xl flex items-center justify-center group-hover:bg-white transition-colors duration-300 shadow-inner group-hover:shadow-sm border border-transparent group-hover:border-emerald-100 shrink-0">
+                            <div class="w-12 h-12 bg-emerald-50/80 rounded-xl flex items-center justify-center group-hover:bg-white transition-colors duration-300 shadow-inner group-hover:shadow-sm border border-transparent group-hover:border-emerald-100 shrink-0 mt-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-emerald-600 group-hover:scale-110 transition-transform duration-300">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
                         </div>
-                    </div>
+                    </a>
 
                 </div>
 
