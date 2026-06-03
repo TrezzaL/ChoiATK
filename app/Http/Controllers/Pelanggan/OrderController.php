@@ -101,7 +101,7 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         // Pastikan user hanya bisa melihat detail order miliknya sendiri
-        if ($order->user_id !== auth()->id()) {
+        if ($order->user_id != auth()->id()) {
             abort(403);
         }
 

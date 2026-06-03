@@ -50,12 +50,13 @@
 
                     {{-- Filter Kategori (Custom Dropdown Alpine.js) --}}
                     @php
-                        $selectedCategoryId = request('category_id', '');
-                        $selectedCategoryName = 'Semua Kategori';
+                    // Logika untuk menentukan kategori yang sedang dipilih berdasarkan query parameter di URL
+                        $selectedCategoryId = request('category_id', ''); // Default ke string kosong untuk "Semua Kategori"
+                        $selectedCategoryName = 'Semua Kategori'; // Label default jika tidak ada filter kategori yang dipilih
 
                         // Cek apakah ada kategori yang sedang di-filter di URL
                         if ($selectedCategoryId) {
-                            $currentCat = $categories->firstWhere('id', $selectedCategoryId);
+                            $currentCat = $categories->firstWhere('id', $selectedCategoryId); // Cari nama kategori yang sesuai dengan ID yang dipilih
                             if ($currentCat) {
                                 $selectedCategoryName = $currentCat->nama;
                             }

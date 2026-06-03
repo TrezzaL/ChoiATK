@@ -17,11 +17,11 @@ class Cart extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class); //relasi antara Cart dan Product, menunjukkan bahwa setiap item dalam keranjang terkait dengan satu produk tertentu. Dengan menggunakan belongsTo, kita dapat mengakses informasi produk yang terkait dengan item keranjang tersebut.
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
-    }
+        return $this->belongsTo(User::class); // setiap user dapat memiliki banyak item dalam keranjang, tetapi setiap item dalam keranjang hanya terkait dengan satu user tertentu. Dengan menggunakan belongsTo, kita dapat mengakses informasi pengguna yang terkait dengan item keranjang tersebut.
+    } 
 }

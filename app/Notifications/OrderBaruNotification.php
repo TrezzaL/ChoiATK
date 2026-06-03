@@ -15,7 +15,9 @@ class OrderBaruNotification extends Notification
 
     public function __construct($order)
     {
-        $this->order = $order;
+        $this->order = $order; // Menyimpan data order yang diterima dari CartController ke dalam properti $order
+        // untuk digunakan nanti saat membuat pesan notifikasi. Dengan cara ini, kita bisa mengakses informasi order
+        // seperti nama pelanggan, total bayar, dan daftar produk yang dipesan saat menyusun pesan notifikasi.
     }
 
     /**
@@ -51,7 +53,7 @@ class OrderBaruNotification extends Notification
                 $ringkasan[] = $item->product->nama . ' (' . $item->jumlah . 'x)';
             }
         }
-        $daftarProduk = implode(', ', $ringkasan);
+        $daftarProduk = implode(', ', $ringkasan); // Menggabungkan nama produk dan jumlahnya menjadi satu string yang mudah dibaca
 
         return [
             'order_id' => $this->order->id,

@@ -17,7 +17,9 @@ class OrderNotification extends Notification
      */
     public function __construct($data)
     {
-        $this->data = $data;
+        $this->data = $data; // Menyimpan data yang diterima dari CartController ke dalam properti $data
+        // untuk digunakan nanti saat membuat pesan notifikasi. Dengan cara ini, kita bisa mengakses
+        // informasi seperti pesan notifikasi dan URL yang terkait saat menyusun pesan notifikasi.
     }
 
     /**

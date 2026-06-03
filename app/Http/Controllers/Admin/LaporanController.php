@@ -14,7 +14,10 @@ class LaporanController extends Controller
     /**
      * Hitung jumlah sesi checkout unik per status dalam 30 Hari Terakhir.
      */
-    private function countSessions(string $status): int
+    private function countSessions(string $status): int // fungsi untuk menghitung jumlah sesi checkout unik berdasarkan
+    // status tertentu (misalnya 'selesai', 'menunggu konfirmasi', atau 'ditolak') dalam 30 hari terakhir.
+    // Fungsi ini menggunakan query builder untuk mengambil data dari tabel orders, mengelompokkan berdasarkan user_id
+    // dan menit pembuatan order, lalu menghitung jumlah sesi unik yang sesuai dengan status yang diberikan.
     {
         return Order::where('status', $status)
                  ->where('created_at', '>=', now()->subDays(30))
@@ -43,7 +46,7 @@ class LaporanController extends Controller
         $totalOrderDitolak = $this->countSessions('ditolak');
 
         // ── 2. Produk Terlaris ───────────────────────────────────────────────
-        $terlaris = Product::with('category') 
+        $terlaris = Product::with('category')
             ->select('products.*')
             ->leftJoin('orders', function ($join) {
                 $join->on('orders.product_id', '=', 'products.id')

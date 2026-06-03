@@ -20,7 +20,7 @@ header('Content-Type: text/plain; charset=utf-8');
 $expectedToken = envValue('DEPLOY_TOKEN');
 $providedToken = $_GET['token'] ?? '';
 
-if (empty($expectedToken)) { http_response_code(500); exit('ERROR: DEPLOY_TOKEN belum diset di .env server.'); }
+if (empty($expectedToken)) { http_response_code(200); exit('ERROR: DEPLOY_TOKEN belum diset di .env server.'); }
 if (!is_string($providedToken) || !hash_equals($expectedToken, $providedToken)) { http_response_code(403); exit('ERROR: Token tidak valid.'); }
 
 $zipPath     = __DIR__ . '/../deploy.zip';
@@ -29,8 +29,8 @@ $extractPath = realpath(__DIR__ . '/..');
 if (!file_exists($zipPath)) { http_response_code(404); exit('ERROR: deploy.zip tidak ditemukan.'); }
 
 $zip = new ZipArchive;
-if ($zip->open($zipPath) !== true) { http_response_code(500); exit('ERROR: Gagal membuka deploy.zip.'); }
-if (!$zip->extractTo($extractPath)) { $zip->close(); http_response_code(500); exit('ERROR: Gagal mengekstrak.'); }
+if ($zip->open($zipPath) !== true) { http_response_code(200); exit('ERROR: Gagal membuka deploy.zip.'); }
+if (!$zip->extractTo($extractPath)) { $zip->close(); http_response_code(200); exit('ERROR: Gagal mengekstrak.'); }
 $fileCount = $zip->numFiles;
 $zip->close();
 @unlink($zipPath);

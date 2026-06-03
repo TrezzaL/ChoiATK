@@ -17,22 +17,27 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Http\Controllers\Admin\HutangController;
 
+// get untuk menampilkan halaman, post untuk menyimpan data, patch untuk update data, delete untuk menghapus data
+// post untuk menyimpan data, patch untuk update data, delete untuk menghapus data
+// resource untuk membuat route otomatis berdasarkan konvensi RESTful (index, create, store, show, edit, update, destroy)
+// patch untuk update data, delete untuk menghapus data, get untuk menampilkan halaman, post untuk menyimpan data
+// put untuk update data, delete untuk menghapus data, get untuk menampilkan halaman, post untuk menyimpan data
 Route::get('/', function () {
     return redirect()->route('landing');
 });
 
 Route::get('/landing', function () {
-    $categories = Category::all();
-    $products = Product::where('is_aktif', true)->with('category')->get();
+    $categories = Category::all(); // Mengambil semua kategori dari database menggunakan model Category dan menyimpannya dalam variabel $categories.
+    $products = Product::where('is_aktif', true)->with('category')->get(); // Mengambil semua produk yang aktif (is_aktif = true) dari database menggunakan model Product, termasuk relasi dengan kategori (with('category')), dan menyimpannya dalam variabel $products. Dengan cara ini, kita bisa menampilkan informasi produk beserta kategori terkait di halaman landing.
     return view('landing', compact('categories', 'products'));
-})->name('landing');
+})->name('landing'); // Route untuk menampilkan halaman landing, dengan nama route 'landing'. Halaman ini akan menampilkan daftar kategori dan produk yang diambil dari database.
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit'); // Route untuk menampilkan halaman edit profil, dengan nama route 'profile.edit'. Halaman ini akan menggunakan metode 'edit' dari ProfileController untuk menampilkan form edit profil kepada pengguna yang sudah terautentikasi.
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
@@ -49,10 +54,10 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
     // Product
     Route::resource('product', ProductController::class);
 
-    // Pindahkan MANUAL ke atas agar tidak tertabrak parameter {order}
+    // Order Manual}
     Route::get('/orders/create-manual', [AdminOrder::class, 'createManual'])->name('order.create_manual');
     Route::post('/orders/store-manual', [AdminOrder::class, 'storeManual'])->name('order.store_manual');
-    
+
     // Order Manajemen
     Route::get('/orders', [AdminOrder::class, 'index'])->name('order.index');
     Route::get('/orders/{order}', [AdminOrder::class, 'show'])->name('order.show');
@@ -65,6 +70,8 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
     Route::get('/laporan/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.pdf');
 
     // Notifikasi
+    // Route untuk menandai notifikasi sebagai sudah dibaca. Ketika admin mengklik notifikasi, route ini akan dipanggil
+    // dengan ID notifikasi yang ingin ditandai sebagai sudah dibaca. AdminNotificationController akan menang
     Route::get('/notification/{id}/read', [AdminNotificationController::class, 'read'])->name('notification.read');
 
     // Hutang
@@ -95,7 +102,7 @@ Route::middleware(['auth','pelanggan'])->prefix('pelanggan')->name('pelanggan.')
     // Cart / Keranjang
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
-    Route::put('/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
+    Route::put('/cart/{cart}', [CartController::class, 'update'])->name('cart.update'); //{cart} adalah parameter yang akan menangkap ID cart yang ingin diupdate. Dengan menggunakan metode PUT, kita mengikuti konvensi RESTful untuk operasi update pada resource cart. Metode ini akan memanggil fungsi update di CartController, yang akan menangani logika untuk memperbarui jumlah item dalam keranjang berdasarkan ID cart yang diberikan.
     Route::delete('/cart/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
 
     // CheckOut
@@ -103,6 +110,9 @@ Route::middleware(['auth','pelanggan'])->prefix('pelanggan')->name('pelanggan.')
     Route::post('/checkout/store', [CartController::class, 'checkoutStore'])->name('checkout.store');
 
     // Notifikasi Pelanggan
+    // Route untuk menandai notifikasi sebagai sudah dibaca. Ketika pelanggan mengklik notifikasi, route ini akan dipanggil
+    // dengan ID notifikasi yang ingin ditandai sebagai sudah dibaca. Setelah itu,
+    // pelanggan akan diarahkan ke URL yang terkait dengan notifikasi tersebut (misalnya halaman detail order) atau ke dashboard jika URL tidak tersedia.
     Route::get('/notification/{id}/read', function($id) {
         $notification = auth()->user()->notifications()->find($id);
         if($notification) {
@@ -113,10 +123,14 @@ Route::middleware(['auth','pelanggan'])->prefix('pelanggan')->name('pelanggan.')
     })->name('notification.read');
 
     // Profil Pelanggan
+    // Route untuk menampilkan halaman edit profil pelanggan, dengan nama route 'pelanggan.profile.edit'. Halaman ini akan menggunakan metode 'edit' dari Profile
     Route::get('/profile', function() {
         return view('pelanggan.profile.edit', ['user' => auth()->user()]);
     })->name('profile.edit');
 });
 // Akhir Route Pelanggan
 
+// Route untuk mengelola autentikasi (login, register, dll) menggunakan file auth.php yang disediakan oleh Laravel Breeze.
+// File ini berisi route yang diperlukan untuk proses autentikasi pengguna, seperti menampilkan form login,
+// memproses login, menampilkan form registrasi, memproses registrasi, dan lain sebagainya.
 require __DIR__.'/auth.php';
