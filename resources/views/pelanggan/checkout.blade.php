@@ -102,7 +102,7 @@
                                     </div>
                                 </div>
 
-                                {{-- 1. OPSI PENYERAHAN BARANG (PINDAH KE ATAS) --}}
+                                {{-- 1. OPSI PENYERAHAN BARANG --}}
                                 <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
                                     <div class="px-6 py-4 border-b border-slate-50 flex items-center gap-3">
                                         <div class="w-8 h-8 bg-blue-50 rounded-xl flex items-center justify-center">
@@ -135,16 +135,16 @@
                                             </label>
                                         </div>
 
-                                        {{-- Warning Banner Reaktif Jika Belanjaan Kurang Dari Rp 10.000 --}}
-                                        <div x-show="!bisaDiantar" x-transition class="bg-amber-50 border border-amber-100 rounded-xl px-4 py-3 text-xs text-amber-700 flex items-center gap-2">
+                                        {{-- Warning Banner Jika Belanjaan Kurang Dari Rp 10.000 --}}
+                                        <div x-show="!bisaDiantar" x-cloak x-transition class="bg-amber-50 border border-amber-100 rounded-xl px-4 py-3 text-xs text-amber-700 flex items-center gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-amber-500 shrink-0">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                                             </svg>
                                             <span>Layanan antar terkunci. Total keranjang belanja Anda saat ini (<strong class="text-slate-900">Rp {{ number_format($totalBelanja, 0, ',', '.') }}</strong>) belum mencapai batas minimal Rp 10.000.</span>
                                         </div>
 
-                                        {{-- Batas Wilayah Pengantaran Lokal --}}
-                                        <div x-show="delivery === 'diantar' && bisaDiantar" x-transition class="bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 text-xs text-blue-800 space-y-1">
+                                        {{-- Batas Wilayah Pengantaran Lokal (Hanya Muncul Jika Diantar) --}}
+                                        <div x-show="delivery === 'diantar' && bisaDiantar" x-cloak x-transition class="bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 text-xs text-blue-800 space-y-1">
                                             <div class="flex items-center gap-2 font-bold">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-blue-600 shrink-0">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 111.083 1.083l-.02.041m-1.104-1.104l.02-.041m1.104 1.104l-.041.02M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -154,6 +154,20 @@
                                             </div>
                                             <p class="pl-6 leading-relaxed text-slate-600">
                                                 Layanan kurir eksklusif mengantar ke wilayah <strong class="text-slate-900">Perumahan Pangauban Silih Asih</strong> (Maks. 2 KM). Jika Anda berada di luar area, hubungi WhatsApp Admin di <strong class="text-blue-700">0812-1319-2110</strong> sebelum memesan.
+                                            </p>
+                                        </div>
+
+                                        {{-- INFORMASI ALAMAT TOKO (Hanya Muncul Jika Ambil Sendiri) --}}
+                                        <div x-show="delivery === 'ambil'" x-cloak x-transition class="bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-3 text-xs text-indigo-800 space-y-1">
+                                            <div class="flex items-center gap-2 font-bold">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-indigo-600 shrink-0">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25s-7.5-4.108-7.5-11.25a7.5 7.5 0 1115 0z" />
+                                                </svg>
+                                                <span>Lokasi Pengambilan Barang (Toko ChoiATK)</span>
+                                            </div>
+                                            <p class="pl-6 leading-relaxed text-slate-600">
+                                                Silakan ambil pesanan Anda langsung di lokasi kami: <strong class="text-slate-900">Perumahan Pangauban Silih Asih Blok L-10, Jl. Mawar, Kec. Batujajar, Kab. Bandung Barat.</strong>
                                             </p>
                                         </div>
 
