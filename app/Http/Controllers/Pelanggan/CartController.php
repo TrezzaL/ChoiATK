@@ -84,7 +84,7 @@ class CartController extends Controller
         ]);
 
         // Pastikan user hanya bisa update cart miliknya sendiri
-        if ($cart->user_id !== Auth::id()) {
+        if ((int) $cart->user_id !== (int) Auth::id()) {
             abort(403);
         }
 
@@ -97,7 +97,7 @@ class CartController extends Controller
     public function destroy(Cart $cart)
     {
         // Pastikan user hanya bisa hapus cart miliknya sendiri
-        if ($cart->user_id !== Auth::id()) {
+        if ((int) $cart->user_id !== (int) Auth::id()) {
             abort(403);
         }
 
