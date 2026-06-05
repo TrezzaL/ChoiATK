@@ -77,15 +77,18 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
     }
 
-    public function update(Request $request, Cart $cart)
+    public function update(Request $request, $id) // 1. Ubah parameter jadi $id
     {
         $request->validate([
             'quantity' => 'required|integer|min:1',
         ]);
 
-        // Pastikan user hanya bisa update cart miliknya sendiri
-        if ((int) $cart->user_id !== (int) Auth::id()) {
-            abort(403);
+        // 2. Cari data keranjang secara MANUAL (Anti Gagal)
+        $cart = Cart::findOrFail($id);
+
+        // 3. Pengecekan tanpa strict mode (pakai != saja)
+        if ($cart->user_id != Auth::id()) {
+            abort(403, 'Ini bukan keranjangmu bro!');
         }
 
         $cart->quantity = $request->quantity;
@@ -94,11 +97,14 @@ class CartController extends Controller
         return redirect()->route('pelanggan.cart.index')->with('success', 'Jumlah produk berhasil diperbarui!');
     }
 
-    public function destroy(Cart $cart)
+    public function destroy($id) // 1. Ubah parameter jadi $id
     {
-        // Pastikan user hanya bisa hapus cart miliknya sendiri
-        if ((int) $cart->user_id !== (int) Auth::id()) {
-            abort(403);
+        // 2. Cari data keranjang secara MANUAL
+        $cart = Cart::findOrFail($id);
+
+        // 3. Pengecekan
+        if ($cart->user_id != Auth::id()) {
+            abort(403, 'Ini bukan keranjangmu bro!');
         }
 
         $cart->delete();
