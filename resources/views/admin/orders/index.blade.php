@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -7,12 +7,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 antialiased">
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex min-h-screen">
         {{-- Sidebar --}}
         <x-sidebar-admin/>
 
         {{-- Main Content Area --}}
-        <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
             {{-- Top Navbar --}}
             <x-navbar-admin/>
 
@@ -103,7 +103,7 @@
                             </div>
 
                             {{-- RIGHT SIDE: BARU! Input Search Pembeli / ID Pesanan (Live Search Alpine.js) --}}
-                            <div class="flex items-center gap-2 w-full md:w-auto min-w-[280px]" x-data>
+                            <div class="flex items-center gap-2 w-full md:w-auto md:min-w-[280px]" x-data>
                                 <div class="relative w-full">
                                     <input type="text"
                                         name="search"
@@ -143,7 +143,7 @@
                         <p class="text-sm text-slate-500 mt-1">Pantau, setujui, dan kelola semua pesanan masuk dari pelanggan ChoiATK.</p>
                     </div>
                     <a href="{{ route('admin.order.create_manual') }}"
-                    class="h-12 inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white px-5 rounded-xl text-sm font-bold shadow-sm transition">
+                    class="h-12 inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white px-5 rounded-xl text-sm font-bold shadow-sm transition self-start md:self-auto">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>

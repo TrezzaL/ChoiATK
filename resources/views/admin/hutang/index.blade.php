@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -7,12 +7,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#F8FAFC] min-h-screen text-slate-800 antialiased">
-<div class="flex h-screen overflow-hidden">
+<div class="flex min-h-screen">
 
-    {{-- Sesuaikan nama komponen sidebar admin milikmu --}}
     <x-sidebar-admin/>
 
-    <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
         {{-- Sesuaikan nama komponen navbar admin milikmu --}}
         <x-navbar-admin/>
 

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -16,9 +16,9 @@
           }
       }">
 
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex min-h-screen">
         <x-sidebar-admin/>
-        <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
             <x-navbar-admin/>
 
             <main class="p-6 md:p-8 space-y-6 animate-page-load">

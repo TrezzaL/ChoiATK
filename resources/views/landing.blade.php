@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -618,7 +618,7 @@
 
     <footer class="bg-blue-600 text-white border-t border-blue-500 pt-16 pb-8">
         <div class="mx-auto max-w-7xl px-4 md:px-8">
-            <div class="grid gap-10 md:grid-cols-4 mb-12">
+            <div class="grid gap-8 grid-cols-2 md:grid-cols-4 mb-12">
 
                 <div class="md:col-span-1">
                     <a href="#" class="inline-block group mb-6">

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -7,9 +7,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 antialiased">
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex min-h-screen">
         <x-sidebar-admin/>
-        <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
             <x-navbar-admin/>
 
             <main class="p-6 md:p-8 space-y-8 animate-page-load">
@@ -28,7 +28,7 @@
                     </div>
 
                     {{-- Action Area --}}
-                    <div class="flex items-center gap-3">
+                    <div class="flex flex-wrap items-center gap-3">
                         {{-- Export PDF --}}
                         <a href="{{ route('admin.laporan.pdf') }}"
                         class="
@@ -74,7 +74,7 @@
                 </div>
 
                 {{-- Stats Summary Cards --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
 
                     {{-- Total Pendapatan --}}
                     <div class="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group">

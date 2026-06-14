@@ -10,9 +10,9 @@
     <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
 </head>
 <body class="bg-[#F8FAFC] min-h-screen text-slate-800 antialiased">
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex min-h-screen">
         <x-sidebar-pelanggan/>
-        <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
             <x-navbar-pelanggan/>
 
             <main class="p-6 md:p-8 space-y-6 animate-page-load">
@@ -129,7 +129,7 @@
 
                             <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
                                 {{-- Order Header --}}
-                                <div class="flex justify-between items-center px-6 py-4 border-b border-slate-50 bg-slate-50/40">
+                                <div class="flex flex-wrap justify-between items-center px-4 sm:px-6 py-4 border-b border-slate-50 bg-slate-50/40 gap-3">
                                     <div class="flex flex-wrap items-center gap-3">
                                         {{-- Badge Status Pesanan dengan Masking UX --}}
                                         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border {{ $statusConfig['bg'] }}">
@@ -173,10 +173,10 @@
                                 </div>
 
                                 {{-- Items List --}}
-                                <div class="px-6 py-3 divide-y divide-slate-50">
+                                <div class="px-4 sm:px-6 py-3 divide-y divide-slate-50">
                                     @foreach($group as $item)
                                         <div class="flex justify-between items-center py-3.5">
-                                            <div class="flex items-center gap-3">
+                                            <div class="flex items-center gap-3 min-w-0">
                                                 <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center border border-blue-100 shrink-0">
                                                     @if($item->product->foto)
                                                         <img src="{{ asset('storage/' . $item->product->foto) }}" class="w-full h-full object-cover rounded-xl">
@@ -186,18 +186,18 @@
                                                         </svg>
                                                     @endif
                                                 </div>
-                                                <div>
-                                                    <p class="font-semibold text-slate-800 text-sm">{{ $item->product->nama }}</p>
+                                                <div class="min-w-0">
+                                                    <p class="font-semibold text-slate-800 text-sm truncate">{{ $item->product->nama }}</p>
                                                     <p class="text-xs text-slate-400 mt-0.5">{{ $item->jumlah }} pcs &times; Rp {{ number_format($item->product->harga, 0, ',', '.') }}</p>
                                                 </div>
                                             </div>
-                                            <span class="font-bold text-slate-800 text-sm">Rp {{ number_format($item->total_harga, 0, ',', '.') }}</span>
+                                            <span class="font-bold text-slate-800 text-sm shrink-0 ml-2">Rp {{ number_format($item->total_harga, 0, ',', '.') }}</span>
                                         </div>
                                     @endforeach
                                 </div>
 
                                 {{-- Total Footer --}}
-                                <div class="flex justify-between items-center px-6 py-3.5 bg-slate-50/60 border-t border-slate-100">
+                                <div class="flex justify-between items-center px-4 sm:px-6 py-3.5 bg-slate-50/60 border-t border-slate-100">
                                     <span class="text-xs font-semibold text-slate-500">Total Pembayaran</span>
                                     <span class="font-extrabold text-blue-700 text-base">Rp {{ number_format($totalHargaGrup, 0, ',', '.') }}</span>
                                 </div>

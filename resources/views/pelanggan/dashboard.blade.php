@@ -7,9 +7,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#F8FAFC] min-h-screen text-slate-800 antialiased">
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex min-h-screen">
         <x-sidebar-pelanggan/>
-        <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
             <x-navbar-pelanggan/>
 
             <main class="p-6 md:p-8 space-y-6 animate-page-load">
@@ -22,7 +22,7 @@
                         <p class="text-blue-200 text-sm font-medium">Selamat datang kembali</p>
                         <h2 class="text-2xl font-extrabold text-white mt-1 tracking-tight">{{ auth()->user()->name }}</h2>
                         <p class="text-blue-200 text-sm mt-2">Temukan kebutuhan alat tulis kantor terbaik untuk kamu.</p>
-                        <div class="flex gap-3 mt-5">
+                        <div class="flex flex-wrap gap-3 mt-5">
                             <a href="{{ route('pelanggan.katalog') }}"
                                class="inline-flex items-center gap-2 bg-white text-blue-700 hover:bg-blue-50 px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-900/20 transition">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
@@ -39,7 +39,7 @@
                 </div>
 
                 {{-- Stats Cards --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
 
                     {{-- Total Order --}}
                     <a href="{{ route('pelanggan.order.index') }}" class="block relative bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden group cursor-pointer">
@@ -146,7 +146,7 @@
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="font-bold text-slate-800 text-sm group-hover:text-blue-700 transition-colors">Pesanan Saya</p>
-                            <p class="text-xs text-slate-400 mt-0.5">Lihat status & riwayat order</p>
+                            <p class="text-xs text-slate-400 mt-0.5">Lihat status &amp; riwayat order</p>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-slate-300 group-hover:text-blue-500 transition-colors shrink-0">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />

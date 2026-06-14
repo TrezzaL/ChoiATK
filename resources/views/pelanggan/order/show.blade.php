@@ -7,9 +7,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#F8FAFC] min-h-screen text-slate-800 antialiased">
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex min-h-screen">
         <x-sidebar-pelanggan/>
-        <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
             <x-navbar-pelanggan/>
 
             <main class="p-6 md:p-8 space-y-6 animate-page-load">
@@ -70,7 +70,7 @@
                                 <h3 class="text-sm font-bold text-slate-900">Produk yang Dipesan</h3>
                             </div>
                             <div class="p-6">
-                                <div class="flex items-center gap-5">
+                                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5">
                                     <div class="w-20 h-20 rounded-2xl overflow-hidden bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0">
                                         @if($order->product->foto)
                                             <img src="{{ asset('storage/' . $order->product->foto) }}" class="w-full h-full object-cover">
@@ -85,7 +85,7 @@
                                         <span class="inline-flex items-center mt-1 px-2.5 py-0.5 rounded-lg bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-100">
                                             {{ $order->product->category->nama ?? 'ATK' }}
                                         </span>
-                                        <div class="flex items-center gap-5 mt-4">
+                                        <div class="flex flex-wrap items-center gap-5 mt-4">
                                             <div>
                                                 <p class="text-xs font-semibold text-slate-400 mb-0.5">Harga / pcs</p>
                                                 <p class="text-sm font-bold text-slate-800">{{ $order->product->hargaFormatted() }}</p>

@@ -1,9 +1,16 @@
 {{-- Premium Navbar Pelanggan — Tema Landing Page --}}
-<nav class="bg-white/80 backdrop-blur-md border-b border-slate-100 px-6 py-3.5 flex justify-between items-center sticky top-0 z-40 shadow-sm">
-    {{-- Left: Breadcrumb --}}
-    <div class="flex items-center gap-2 text-sm">
-        <span class="text-slate-400 font-medium">ChoiATK</span>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-300">
+<nav class="bg-white/80 backdrop-blur-md border-b border-slate-100 px-4 lg:px-6 py-3.5 flex justify-between items-center sticky top-0 z-40 shadow-sm">
+    {{-- Left: Hamburger (mobile) + Breadcrumb --}}
+    <div class="flex items-center gap-3 text-sm">
+        {{-- Hamburger Button — only visible on mobile --}}
+        <button onclick="window.dispatchEvent(new CustomEvent('open-sidebar'))"
+                class="lg:hidden w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 text-slate-500 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50/50 transition focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+        </button>
+        <span class="text-slate-400 font-medium hidden sm:inline">ChoiATK</span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-slate-300 hidden sm:inline">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
         </svg>
         <span class="font-semibold text-slate-800">

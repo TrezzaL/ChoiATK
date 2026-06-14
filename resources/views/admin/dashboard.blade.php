@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -8,13 +8,13 @@
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 antialiased">
 
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex min-h-screen">
 
         {{-- Sidebar --}}
         <x-sidebar-admin/>
 
         {{-- Main Content Area --}}
-        <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
 
             {{-- Top Navbar --}}
             <x-navbar-admin/>
@@ -37,7 +37,7 @@
                 </div>
 
                 {{-- Statistics Cards --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
 
                     {{-- Card 1: Total Produk --}}
                     <div class="group bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">

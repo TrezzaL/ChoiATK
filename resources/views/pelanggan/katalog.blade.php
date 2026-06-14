@@ -8,10 +8,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#F8FAFC] min-h-screen text-slate-800 antialiased">
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex min-h-screen">
         <x-sidebar-pelanggan/>
 
-        <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
             <x-navbar-pelanggan/>
 
             <main class="p-6 md:p-8 space-y-6 animate-page-load">
@@ -36,7 +36,7 @@
                     class="bg-white rounded-2xl border border-slate-100 p-4 shadow-sm flex gap-3 flex-wrap items-center">
 
                     {{-- Kolom Input Search (Live Search dengan Alpine.js) --}}
-                    <div class="relative flex-1 min-w-48" x-data>
+                    <div class="relative flex-1 min-w-[180px]" x-data>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
@@ -63,7 +63,7 @@
                         }
                     @endphp
 
-                    <div class="relative min-w-48"
+                    <div class="relative min-w-[180px]"
                         x-data="{
                             open: false,
                             selectedId: '{{ $selectedCategoryId }}',
@@ -171,7 +171,7 @@
                         <p class="text-slate-400 text-sm mt-1">Coba kata kunci lain atau pilih kategori berbeda</p>
                     </div>
                 @else
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         @foreach($products as $product)
                         <div class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 overflow-hidden flex flex-col group">
 
@@ -179,9 +179,9 @@
                             <div class="relative overflow-hidden">
                                 @if($product->foto)
                                     <img src="{{ asset('storage/' . $product->foto) }}"
-                                        class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
+                                        class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition-transform duration-300">
                                 @else
-                                    <div class="w-full h-44 bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
+                                    <div class="w-full h-36 sm:h-44 bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-blue-300">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487z" />
                                         </svg>
@@ -196,24 +196,24 @@
                             </div>
 
                             {{-- Info Produk --}}
-                            <div class="p-4 flex flex-col flex-1">
+                            <div class="p-3 sm:p-4 flex flex-col flex-1">
                                 <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold border border-blue-100 mb-2 w-fit">
                                     {{ $product->category->nama }}
                                 </span>
 
-                                <p class="font-bold text-slate-800 text-sm leading-tight mb-1 group-hover:text-blue-700 transition-colors">
+                                <p class="font-bold text-slate-800 text-sm leading-tight mb-1 group-hover:text-blue-700 transition-colors line-clamp-2">
                                     {{ $product->nama }}
                                 </p>
 
                                 @if($product->deskripsi)
-                                    <p class="text-xs text-slate-400 mb-3 line-clamp-2 leading-relaxed">
+                                    <p class="text-xs text-slate-400 mb-3 line-clamp-2 leading-relaxed hidden sm:block">
                                         {{ $product->deskripsi }}
                                     </p>
                                 @endif
 
                                 <div class="mt-auto">
                                     <div class="flex items-end justify-between mb-3">
-                                        <p class="text-blue-700 font-extrabold text-base">
+                                        <p class="text-blue-700 font-extrabold text-sm sm:text-base">
                                             {{ $product->hargaFormatted() }}
                                         </p>
                                         <p class="text-xs text-slate-400">
@@ -233,7 +233,7 @@
                                             </button>
 
                                             <a href="{{ route('pelanggan.order.create', ['product_id' => $product->id]) }}"
-                                                class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-sm font-bold transition shadow-sm shadow-blue-500/20 active:scale-[0.98]">
+                                                class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow-sm shadow-blue-500/20 active:scale-[0.98]">
                                                 Pesan Sekarang
                                             </a>
                                         </div>

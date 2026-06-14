@@ -7,11 +7,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#F8FAFC] min-h-screen text-slate-800 antialiased">
-<div class="flex h-screen overflow-hidden">
+<div class="flex min-h-screen">
 
     <x-sidebar-pelanggan/>
 
-    <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
         <x-navbar-pelanggan/>
 
         <main class="p-6 md:p-8 space-y-6 animate-page-load">

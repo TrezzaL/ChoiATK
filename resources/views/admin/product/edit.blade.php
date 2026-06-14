@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -7,9 +7,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 antialiased">
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex min-h-screen">
         <x-sidebar-admin/>
-        <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
             <x-navbar-admin/>
 
             <main class="p-6 md:p-8 animate-page-load">
@@ -29,7 +29,7 @@
                     </div>
 
                     {{-- Form Card --}}
-                    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-8">
+                    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-8">
                         <form method="POST" action="{{ route('admin.product.update', $product) }}" enctype="multipart/form-data" class="space-y-5">
                             @csrf @method('PUT')
 
@@ -131,7 +131,7 @@
                             </div>
 
                             {{-- Harga & Stok --}}
-                            <div class="grid grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Harga (Rp)</label>
                                     <input type="number" name="harga" value="{{ old('harga', $product->harga) }}" required min="0"
