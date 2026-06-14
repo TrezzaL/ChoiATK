@@ -17,6 +17,24 @@
         -moz-osx-font-smoothing: grayscale;
     }
 
+    /*
+     * Fix: Password masking bullet (•) tidak ada di Plus Jakarta Sans.
+     * Pakai Verdana sebagai fallback. Gunakan class .password-input karena
+     * Alpine.js :type dynamic binding membuat input[type=password] tidak reliable.
+     */
+    input[type="password"],
+    .password-input {
+        font-family: Verdana, 'Plus Jakarta Sans', sans-serif;
+        letter-spacing: 0.15em;
+    }
+
+    input[type="password"]::placeholder,
+    .password-input::placeholder {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        letter-spacing: normal;
+        font-size: 0.875rem;
+    }
+
     @keyframes fadeSlideUp {
         0% { opacity: 0; transform: translateY(15px); }
         100% { opacity: 1; transform: translateY(0); }

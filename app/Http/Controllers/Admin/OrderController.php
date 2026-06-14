@@ -94,9 +94,14 @@ class OrderController extends Controller
             $item->update(['status' => 'diproses']);
         }
 
+        // LOGIKA BARU: Tentukan teks notifikasi secara dinamis berdasarkan tipe penyerahan
+        $pesanNotif = ($order->tipe_penyerahan === 'antar')
+            ? "SEDANG DIANTAR ke alamatmu! 🚚"
+            : "SIAP DIAMBIL di konter toko! 🛍️";
+
         // Kirim notifikasi ke pelanggan bahwa pesanan mereka sudah disetujui dan sedang diproses
         $order->user->notify(new \App\Notifications\OrderNotification([ // Kirim notifikasi menggunakan OrderNotification yang sudah dibuat
-            'pesan' => "Pesanan #" . $order->id . " (" . $order->product->nama . ") telah disetujui dan sedang diproses!",
+            'pesan' => "Pesanan #" . $order->id . " (" . $order->product->nama . ") telah disetujui dan " . $pesanNotif,
             'url'   => route('pelanggan.order.show', $order->id)
             // Link notifikasi mengarah ke halaman detail order pelanggan
         ]));
@@ -213,4 +218,3 @@ class OrderController extends Controller
             ->with('success', 'Transaksi offline "' . $request->nama_pembeli . '" — ' . $product->nama . ' (' . $request->jumlah . ' pcs) berhasil dicatat!');
     }
 }
-

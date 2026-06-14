@@ -21,14 +21,19 @@ class OrderController extends Controller
     }
 
     public function store(Request $request) // Method untuk menyimpan data order baru ke database setelah pelanggan submit form buat order
-    { // request adalah data yang dikirim dari form buat order, termasuk product_id, jumlah, catatan, metode_bayar, dan tipe_penyerahan yang baru ditambahkan di form order oleh pelanggan
-        // 1. Validasi request termasuk tipe_penyerahan
+    {
+        // 1. Validasi request termasuk tipe_penyerahan dan logika wajib isi catatan
         $request->validate([
             'product_id'     => 'required|exists:products,id',
             'jumlah'         => 'required|integer|min:1',
-            'catatan'        => 'nullable|string|max:255',
-            'metode_bayar'   => 'required|in:cash,hutang',
             'tipe_penyerahan'=> 'required|in:ambil,antar',
+            'metode_bayar'   => 'required|in:cash,hutang',
+
+            // PERBAIKAN: Catatan wajib isi jika tipe penyerahan adalah 'antar'
+            'catatan'        => 'required_if:tipe_penyerahan,antar|nullable|string|max:255',
+        ], [
+            // Pesan error custom biar lebih jelas kalau tembus validasi frontend
+            'catatan.required_if' => 'Alamat lengkap wajib diisi jika pesanan minta diantar kurir!'
         ]);
 
         // 2. Validasi stok produk berdasarkan product_id yang dikirim dari form di katalog
@@ -41,12 +46,12 @@ class OrderController extends Controller
         // 3. Hitung total harga berdasarkan harga produk dan jumlah yang dipesan
         $totalHarga = $product->harga * $request->jumlah;
 
-        // 2. Validasi Server-Side untuk Batas Minimal Diantar
+        // 4. Validasi Server-Side untuk Batas Minimal Diantar
         if ($request->tipe_penyerahan === 'antar' && $totalHarga < 10000) {
             return back()->with('error', 'Gagal mengirim pesanan. Opsi diantar hanya tersedia untuk pemesanan minimal Rp 10.000!');
         }
 
-        // 3. Simpan order beserta tipe_penyerahan
+        // 5. Simpan order beserta tipe_penyerahan
         $order = Order::create([
             'user_id'         => auth()->id(),
             'product_id'      => $request->product_id,
@@ -58,10 +63,10 @@ class OrderController extends Controller
             'status'          => 'menunggu konfirmasi',
         ]);
 
-        // 4. Kurangi stok produk di database berdasarkan jumlah yang dipesan
+        // 6. Kurangi stok produk di database berdasarkan jumlah yang dipesan
         $product->decrement('stok', $request->jumlah);
 
-        // 5. Kirim notifikasi ke semua admin bahwa ada order baru yang masuk, dengan mengirim data order yang baru dibuat
+        // 7. Kirim notifikasi ke semua admin bahwa ada order baru yang masuk, dengan mengirim data order yang baru dibuat
         $admin = User::where('role', 'admin')->get();
         Notification::send($admin, new OrderBaruNotification($order));
 

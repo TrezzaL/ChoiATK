@@ -7,9 +7,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#F8FAFC] min-h-screen text-slate-800 antialiased">
-    <div class="flex min-h-screen">
+    <div class="flex h-screen overflow-hidden">
         <x-sidebar-pelanggan/>
-        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
+        <div class="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
             <x-navbar-pelanggan/>
 
             <main class="p-6 md:p-8 space-y-6 animate-page-load">
@@ -90,23 +90,20 @@
                                     {{-- Qty + Total + Delete --}}
                                     <div class="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto shrink-0 border-t sm:border-t-0 pt-3 sm:pt-0">
 
-                                        {{-- Update Qty Tanpa Tombol OK (Auto-Submit via Event Change) --}}
+                                        {{-- Update Qty Tanpa Tombol OK --}}
                                         <form action="{{ route('pelanggan.cart.update', $item->id) }}" method="POST" id="form-qty-{{ $item->id }}" class="flex items-center">
                                             @csrf @method('PUT')
                                             <div class="flex items-center border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
-                                                {{-- Tombol Minus Manual --}}
                                                 <button type="button"
                                                         @click="if(qty > 1) { qty--; $nextTick(() => $el.form.submit()) }"
                                                         class="w-9 h-9 flex items-center justify-center font-bold text-slate-500 hover:bg-slate-200 transition">
                                                     −
                                                 </button>
 
-                                                {{-- Input Number Reaktif --}}
                                                 <input type="number" name="quantity" x-model.number="qty" min="1" max="{{ $item->product->stok }}"
                                                        @change="$el.form.submit()"
                                                        class="w-12 text-center text-sm font-extrabold text-slate-800 border-none bg-white focus:outline-none p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
 
-                                                {{-- Tombol Plus Manual --}}
                                                 <button type="button"
                                                         @click="if(qty < {{ $item->product->stok }}) { qty++; $nextTick(() => $el.form.submit()) }"
                                                         class="w-9 h-9 flex items-center justify-center font-bold text-slate-500 hover:bg-slate-200 transition">
@@ -115,7 +112,7 @@
                                             </div>
                                         </form>
 
-                                        {{-- Subtotal (Dihitung Instan Lewat Alpine.js) --}}
+                                        {{-- Subtotal --}}
                                         <div class="text-right min-w-[100px]">
                                             <p class="text-sm font-extrabold text-slate-900">
                                                 Rp <span x-text="subtotal.toLocaleString('id-ID')"></span>
@@ -123,11 +120,8 @@
                                             <p class="text-[10px] text-slate-400"><span x-text="qty"></span> pcs</p>
                                         </div>
 
-                                        {{-- Delete --}}
-                                        {{-- Container Utama Modal Hapus Item Keranjang --}}
+                                        {{-- Delete Modal Component --}}
                                         <div x-data="{ openDeleteCartModal: false }">
-
-                                            {{-- 1. Tombol Pemicu Utama (Di dalam list keranjang) --}}
                                             <button type="button"
                                                     @click="openDeleteCartModal = true"
                                                     class="w-9 h-9 flex items-center justify-center rounded-xl text-slate-400 hover:text-red-500 hover:bg-red-50 border border-transparent hover:border-red-100 transition">
@@ -136,29 +130,25 @@
                                                 </svg>
                                             </button>
 
-                                            {{-- 2. Pop-up Modal Konfirmasi Hapus (Dilemparkan ke Body) --}}
                                             <template x-teleport="body">
                                                 <div x-show="openDeleteCartModal"
-                                                    x-transition:enter="transition ease-out duration-200"
-                                                    x-transition:enter-start="opacity-0"
-                                                    x-transition:enter-end="opacity-100"
-                                                    x-transition:leave="transition ease-in duration-150"
-                                                    x-transition:leave-start="opacity-100"
-                                                    x-transition:leave-end="opacity-0"
-                                                    class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
-                                                    style="display: none;">
+                                                     x-transition:enter="transition ease-out duration-200"
+                                                     x-transition:enter-start="opacity-0"
+                                                     x-transition:enter-end="opacity-100"
+                                                     x-transition:leave="transition ease-in duration-150"
+                                                     x-transition:leave-start="opacity-100"
+                                                     x-transition:leave-end="opacity-0"
+                                                     class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+                                                     style="display: none;">
 
-                                                    {{-- Kotak Putih Modal --}}
                                                     <div @click.away="openDeleteCartModal = false"
-                                                        x-transition:enter="transition ease-out duration-300"
-                                                        x-transition:enter-start="opacity-0 scale-95 translate-y-4"
-                                                        x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                                                        class="bg-white rounded-2xl border border-slate-100 max-w-sm w-full p-6 shadow-2xl space-y-4">
+                                                         x-transition:enter="transition ease-out duration-300"
+                                                         x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+                                                         x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                                                         class="bg-white rounded-2xl border border-slate-100 max-w-sm w-full p-6 shadow-2xl space-y-4">
 
-                                                        {{-- Konten Informasi Peringatan --}}
                                                         <div class="flex items-center gap-3 text-left">
                                                             <div class="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center text-red-500 shrink-0">
-                                                                {{-- Ikon Trash/Warning --}}
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                                                                 </svg>
@@ -169,32 +159,26 @@
                                                             </div>
                                                         </div>
 
-                                                        {{-- Tombol Pilihan Aksi --}}
                                                         <div class="grid grid-cols-2 gap-3 pt-2">
-                                                            {{-- Tombol Batal --}}
                                                             <button type="button"
                                                                     @click="openDeleteCartModal = false"
                                                                     class="h-10 text-xs font-semibold text-slate-500 bg-slate-100 hover:bg-slate-200 transition rounded-xl">
                                                                 Batal
                                                             </button>
 
-                                                            {{-- Form Native DELETE Laravel --}}
                                                             <form action="{{ route('pelanggan.cart.destroy', $item->id) }}" method="POST" class="m-0 p-0">
-                                                                @csrf
-                                                                @method('DELETE')
+                                                                @csrf @method('DELETE')
                                                                 <button type="submit"
                                                                         class="w-full h-10 text-xs font-bold text-white bg-red-600 hover:bg-red-700 transition rounded-xl shadow-md shadow-red-500/10">
                                                                     Ya, Hapus
                                                                 </button>
                                                             </form>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </template>
                                         </div>
                                     </div>
-
                                 </div>
                             @endforeach
                         </div>

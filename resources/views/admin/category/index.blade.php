@@ -16,9 +16,9 @@
           }
       }">
 
-    <div class="flex min-h-screen">
+    <div class="flex h-screen overflow-hidden">
         <x-sidebar-admin/>
-        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
             <x-navbar-admin/>
 
             <main class="p-6 md:p-8 space-y-6 animate-page-load">

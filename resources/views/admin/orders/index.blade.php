@@ -7,12 +7,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 antialiased">
-    <div class="flex min-h-screen">
+    <div class="flex h-screen overflow-hidden">
         {{-- Sidebar --}}
         <x-sidebar-admin/>
 
         {{-- Main Content Area --}}
-        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
             {{-- Top Navbar --}}
             <x-navbar-admin/>
 

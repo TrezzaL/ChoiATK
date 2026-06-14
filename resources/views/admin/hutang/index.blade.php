@@ -7,11 +7,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#F8FAFC] min-h-screen text-slate-800 antialiased">
-<div class="flex min-h-screen">
+<div class="flex h-screen overflow-hidden">
 
     <x-sidebar-admin/>
 
-    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
         {{-- Sesuaikan nama komponen navbar admin milikmu --}}
         <x-navbar-admin/>
 
@@ -51,32 +51,45 @@
                         <thead>
                             <tr class="bg-slate-50 border-b border-slate-100 text-slate-400 text-xs font-bold uppercase tracking-wider">
                                 <th class="p-4 pl-6">Pelanggan</th>
-                                <th class="p-4">Item Produk</th>
+                                <th class="p-4">Daftar Produk Bon</th>
                                 <th class="p-4">Tanggal Bon</th>
                                 <th class="p-4">Total Hutang</th>
                                 <th class="p-4 text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-50 text-sm text-slate-700">
-                            @forelse($daftarHutang as $order)
+                            {{-- Ubah foreach karena datanya sekarang bentuk Array Grouping --}}
+                            @forelse($daftarHutang as $groupKey => $group)
+                                @php
+                                    // Ambil data perwakilan dari orderan pertama di grup ini
+                                    $firstOrder = $group->first();
+
+                                    // Hitung total harga semua barang di bon ini
+                                    $totalBonGroup = $group->sum('total_harga');
+
+                                    // Gabungin nama-nama barang jadi satu kalimat
+                                    $listProduk = $group->map(function($item) {
+                                        return $item->product->nama . ' (' . $item->jumlah . 'x)';
+                                    })->implode(', ');
+                                @endphp
+
                                 <tr class="hover:bg-slate-50/50 transition">
                                     {{-- Info Pelanggan --}}
                                     <td class="p-4 pl-6">
-                                        <p class="font-bold text-slate-900">{{ $order->user->name }}</p>
-                                        <p class="text-xs text-slate-400 mt-0.5">{{ $order->user->phone ?? 'Tidak ada No. HP' }}</p>
+                                        <p class="font-bold text-slate-900">{{ $firstOrder->user->name }}</p>
+                                        <p class="text-xs text-slate-400 mt-0.5">{{ $firstOrder->user->phone ?? 'Tidak ada No. HP' }}</p>
                                     </td>
-                                    {{-- Info Produk --}}
-                                    <td class="p-4">
-                                        <p class="font-semibold text-slate-800">{{ $order->product->nama }}</p>
-                                        <p class="text-xs text-slate-400 mt-0.5">{{ $order->jumlah }} pcs &times; Rp {{ number_format($order->product->harga, 0, ',', '.') }}</p>
+                                    {{-- Info Produk Gabungan --}}
+                                    <td class="p-4 max-w-xs">
+                                        <p class="text-xs font-medium text-slate-500 leading-relaxed">{{ $listProduk }}</p>
                                     </td>
                                     {{-- Tanggal --}}
                                     <td class="p-4 text-xs font-medium text-slate-500">
-                                        {{ $order->created_at->format('d M Y, H:i') }}
+                                        {{ $firstOrder->created_at->format('d M Y, H:i') }}
                                     </td>
-                                    {{-- Total Nominal --}}
+                                    {{-- Total Nominal Gabungan --}}
                                     <td class="p-4 font-extrabold text-red-600">
-                                        Rp {{ number_format($order->total_harga, 0, ',', '.') }}
+                                        Rp {{ number_format($totalBonGroup, 0, ',', '.') }}
                                     </td>
                                     {{-- Tombol Tindakan Lunas --}}
                                     <td class="p-4 text-center">
@@ -96,21 +109,21 @@
                                             {{-- 2. Pop-up Modal Konfirmasi Pelunasan (Dilemparkan ke Body) --}}
                                             <template x-teleport="body">
                                                 <div x-show="openLunasModal"
-                                                    x-transition:enter="transition ease-out duration-200"
-                                                    x-transition:enter-start="opacity-0"
-                                                    x-transition:enter-end="opacity-100"
-                                                    x-transition:leave="transition ease-in duration-150"
-                                                    x-transition:leave-start="opacity-100"
-                                                    x-transition:leave-end="opacity-0"
-                                                    class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
-                                                    style="display: none;">
+                                                     x-transition:enter="transition ease-out duration-200"
+                                                     x-transition:enter-start="opacity-0"
+                                                     x-transition:enter-end="opacity-100"
+                                                     x-transition:leave="transition ease-in duration-150"
+                                                     x-transition:leave-start="opacity-100"
+                                                     x-transition:leave-end="opacity-0"
+                                                     class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+                                                     style="display: none;">
 
                                                     {{-- Kotak Putih Modal --}}
                                                     <div @click.away="openLunasModal = false"
-                                                        x-transition:enter="transition ease-out duration-300"
-                                                        x-transition:enter-start="opacity-0 scale-95 translate-y-4"
-                                                        x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                                                        class="bg-white rounded-2xl border border-slate-100 max-w-sm w-full p-6 shadow-2xl space-y-4">
+                                                         x-transition:enter="transition ease-out duration-300"
+                                                         x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+                                                         x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                                                         class="bg-white rounded-2xl border border-slate-100 max-w-sm w-full p-6 shadow-2xl space-y-4">
 
                                                         {{-- Konten Informasi Pelunasan --}}
                                                         <div class="flex items-start gap-3 text-left">
@@ -123,7 +136,7 @@
                                                             <div class="text-left">
                                                                 <h3 class="text-base font-bold text-slate-900">Konfirmasi Pelunasan Bon</h3>
                                                                 <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">
-                                                                    Apakah pelanggan pesanan <span class="font-bold text-slate-800">#{{ $order->id }}</span> ini sudah membayar lunas tagihannya?
+                                                                    Apakah <span class="font-bold text-slate-800">{{ $firstOrder->user->name }}</span> sudah membayar lunas seluruh tagihannya sebesar <strong class="text-slate-800">Rp {{ number_format($totalBonGroup, 0, ',', '.') }}</strong>?
                                                                     <span class="inline-block mt-1.5 text-emerald-700 font-medium bg-emerald-50 py-1 px-2 rounded border border-emerald-100">
                                                                         Pastikan uang fisik sudah diterima di kasir.
                                                                     </span>
@@ -141,7 +154,7 @@
                                                             </button>
 
                                                             {{-- Form Native POST Laravel --}}
-                                                            <form method="POST" action="{{ route('admin.hutang.lunaskan', $order) }}" class="m-0 p-0">
+                                                            <form method="POST" action="{{ route('admin.hutang.lunaskan', $firstOrder->id) }}" class="m-0 p-0">
                                                                 @csrf
                                                                 <button type="submit"
                                                                         class="w-full h-10 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition rounded-xl shadow-md shadow-emerald-500/10">

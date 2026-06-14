@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login — ChoiATK | Premium Access</title>
+    <title>Login � ChoiATK | Premium Access</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         body {
@@ -25,7 +25,7 @@
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased selection:bg-indigo-500 selection:text-white">
-    <div class="flex min-h-screen">
+    <div class="flex h-screen overflow-hidden">
         <!-- Form Section -->
         <div class="w-full lg:w-1/2 flex flex-col justify-center px-8 sm:px-16 md:px-24 xl:px-32 relative">
             <!-- Decorative blur blob -->
@@ -96,10 +96,10 @@
                             <input :type="showPass ? 'text' : 'password'"
                                 name="password"
                                 required
-                                class="w-full pl-11 pr-11 py-3 bg-white border border-slate-200 rounded-xl text-sm shadow-sm placeholder-slate-400
+                                class="w-full pl-11 pr-11 py-3 bg-white border border-slate-200 rounded-xl text-sm shadow-sm placeholder-slate-400 password-input
                                 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-200
                                 @error('password') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
-                                placeholder="••••••••">
+                                placeholder="Masukkan password">
 
                             {{-- Tombol Ikon Mata di Sisi Kanan Input --}}
                             <button type="button"

@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buat Pesanan — ChoiATK</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
 <body class="bg-[#F8FAFC] min-h-screen text-slate-800 antialiased">
-<div class="flex min-h-screen">
+<div class="flex h-screen overflow-hidden">
 
     <x-sidebar-pelanggan/>
 
-    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
         <x-navbar-pelanggan/>
 
         <main class="p-6 md:p-8 space-y-6 animate-page-load">
@@ -46,6 +49,7 @@
                      maxQty: {{ $product->stok }},
                      payment: 'cash',
                      delivery: 'ambil',
+                     confirmModal: false,
                      hargaSatuan: {{ $product->harga }},
                      get totalHarga() {
                          return this.hargaSatuan * this.qty;
@@ -109,8 +113,8 @@
                         </div>
                     </div>
 
-                    {{-- Form input utama --}}
-                    <form method="POST" action="{{ route('pelanggan.order.store') }}" id="orderForm">
+                    {{-- Form input utama, ditahan oleh Alpine.js via @submit.prevent --}}
+                    <form method="POST" action="{{ route('pelanggan.order.store') }}" id="orderForm" @submit.prevent="confirmModal = true">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
 
@@ -124,7 +128,7 @@
                                 <h3 class="text-sm font-bold text-slate-900">Detail Pesanan</h3>
                             </div>
 
-                            <div class="p-6 space-y-6">
+                            <div class="p-6 space-y-8"> {{-- Diubah dari space-y-6 ke space-y-8 agar jarak antar grup lebih lega --}}
 
                                 {{-- Jumlah Beli --}}
                                 <div>
@@ -154,7 +158,7 @@
                                 {{-- Metode Bayar --}}
                                 <div>
                                     <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Metode Pembayaran</label>
-                                    <div class="grid grid-cols-2 gap-3">
+                                    <div class="grid grid-cols-2 gap-4"> {{-- Diubah dari gap-3 ke gap-4 agar tidak terlalu rapat --}}
                                         <label :class="payment === 'cash' ? 'border-blue-500 bg-blue-50/40 ring-2 ring-blue-500/10' : 'border-slate-200 hover:bg-slate-50'"
                                                class="flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all duration-150">
                                             <input type="radio" name="metode_bayar" value="cash" x-model="payment" class="mt-0.5 w-4 h-4 text-blue-600 border-slate-300 focus:ring-blue-500">
@@ -177,61 +181,85 @@
                                 {{-- FITUR BARU: Opsi Tipe Penyerahan Produk --}}
                                 <div>
                                     <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Metode Penyerahan</label>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        {{-- Ambil Sendiri --}}
-                                        <label :class="delivery === 'ambil' ? 'border-indigo-500 bg-indigo-50/40 ring-2 ring-indigo-500/10' : 'border-slate-200 hover:bg-slate-50'"
-                                            class="flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all duration-150">
-                                            <input type="radio" name="tipe_penyerahan" value="ambil" x-model="delivery" class="mt-0.5 w-4 h-4 text-indigo-600 border-slate-300 focus:ring-indigo-500">
-                                            <div>
-                                                <p class="text-sm font-bold text-slate-900">Ambil Sendiri</p>
-                                                <p class="text-xs text-slate-400 mt-0.5">Ambil mandiri ke konter toko</p>
-                                            </div>
-                                        </label>
 
-                                        {{-- Diantar Berbasis Validasi Minimum Pembelian --}}
-                                        <label :class="!bisaDiantar ? 'opacity-50 bg-slate-50 border-dashed cursor-not-allowed' : (delivery === 'antar' ? 'border-indigo-500 bg-indigo-50/40 ring-2 ring-indigo-500/10' : 'border-slate-200 hover:bg-slate-50')"
-                                            class="flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all duration-150 relative">
-                                            <input type="radio" name="tipe_penyerahan" value="antar" x-model="delivery" :disabled="!bisaDiantar" class="mt-0.5 w-4 h-4 text-indigo-600 border-slate-300 focus:ring-indigo-500 disabled:opacity-50">
-                                            <div>
-                                                <p class="text-sm font-bold text-slate-900">Diantar Kurir</p>
-                                                <p class="text-xs text-slate-400 mt-0.5">Kirim ke lokasi (Min. Rp 10.000)</p>
-                                            </div>
-                                        </label>
-                                    </div>
+                                    {{-- Menggunakan space-y-4 pada kontainer ini agar tiap elemen anak punya jarak yang rapi --}}
+                                    <div class="space-y-4">
 
-                                    {{-- Banner Peringatan Reaktif Jika Kurang dari Rp 10.000 --}}
-                                    <div x-show="!bisaDiantar" x-transition class="mt-2.5 bg-amber-50 border border-amber-100 rounded-xl px-4 py-2.5 text-xs text-amber-700 flex items-center gap-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-amber-500 shrink-0">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                                        </svg>
-                                        <span>Opsi pengantaran terkunci. Tambah jumlah beli hingga total minimal <strong>Rp 10.000</strong> agar kurir bisa diantar.</span>
-                                    </div>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"> {{-- Diubah dari gap-3 ke gap-4 --}}
+                                            {{-- Ambil Sendiri --}}
+                                            <label :class="delivery === 'ambil' ? 'border-indigo-500 bg-indigo-50/40 ring-2 ring-indigo-500/10' : 'border-slate-200 hover:bg-slate-50'"
+                                                class="flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all duration-150">
+                                                <input type="radio" name="tipe_penyerahan" value="ambil" x-model="delivery" class="mt-0.5 w-4 h-4 text-indigo-600 border-slate-300 focus:ring-indigo-500">
+                                                <div>
+                                                    <p class="text-sm font-bold text-slate-900">Ambil Sendiri</p>
+                                                    <p class="text-xs text-slate-400 mt-0.5">Ambil mandiri ke konter toko</p>
+                                                </div>
+                                            </label>
 
-                                    {{-- ALERT BARU: Wilayah Pengantaran Maksimal Perumahan Pangauban Silih Asih --}}
-                                    <div x-show="delivery === 'antar' && bisaDiantar" x-transition class="mt-2.5 bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 text-xs text-blue-800 space-y-1">
-                                        <div class="flex items-center gap-2 font-bold">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-blue-600 shrink-0">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 111.083 1.083l-.02.041m-1.104-1.104l.02-.041m1.104 1.104l-.041.02M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25s-7.5-4.108-7.5-11.25a7.5 7.5 0 1115 0z" />
-                                            </svg>
-                                            <span>Informasi Wilayah Pengantaran</span>
+                                            {{-- Diantar Berbasis Validasi Minimum Pembelian --}}
+                                            <label :class="!bisaDiantar ? 'opacity-50 bg-slate-50 border-dashed cursor-not-allowed' : (delivery === 'antar' ? 'border-indigo-500 bg-indigo-50/40 ring-2 ring-indigo-500/10' : 'border-slate-200 hover:bg-slate-50')"
+                                                class="flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all duration-150 relative">
+                                                <input type="radio" name="tipe_penyerahan" value="antar" x-model="delivery" :disabled="!bisaDiantar" class="mt-0.5 w-4 h-4 text-indigo-600 border-slate-300 focus:ring-indigo-500 disabled:opacity-50">
+                                                <div>
+                                                    <p class="text-sm font-bold text-slate-900">Diantar Kurir</p>
+                                                    <p class="text-xs text-slate-400 mt-0.5">Kirim ke lokasi (Min. Rp 10.000)</p>
+                                                </div>
+                                            </label>
                                         </div>
-                                        <p class="pl-6 leading-relaxed text-slate-600">
-                                            Pengantaran kurir hanya melayani area <strong class="text-slate-900">Perumahan Pangauban Silih Asih</strong> (Maks. 2 KM). Jika lokasi Anda berada di luar area tersebut, harap hubungi Admin terlebih dahulu melalui WhatsApp <strong class="text-blue-700">0812-1319-2110</strong> sebelum mengirim pesanan.
-                                        </p>
-                                    </div>
-                                </div>
 
-                                {{-- Catatan --}}
-                                <div>
-                                    <label for="catatan" class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
-                                        Catatan & Alamat Kirim <span class="normal-case font-medium text-slate-300">(wajib isi jika diantar)</span>
-                                    </label>
-                                    <textarea name="catatan" id="catatan" rows="3"
-                                        class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-slate-300 resize-none transition"
-                                        :placeholder="delivery === 'antar'
-                                            ? 'TULIS ALAMAT BLOK/NO RUMAH ANDA DISINI! Contoh: Perum Pangauban Silih Asih, Blok L No. 10.'
-                                            : 'Contoh: Tolong disiapkan besok pagi di lobi depan...'"></textarea>
+                                        {{-- Banner Peringatan Reaktif Jika Kurang dari Rp 10.000 --}}
+                                        {{-- margin-top dihapus karena sudah diatur oleh space-y-4 dari parent --}}
+                                        <div x-show="!bisaDiantar" x-transition class="bg-amber-50 border border-amber-100 rounded-xl px-4 py-3.5 text-xs text-amber-700 flex items-start gap-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-amber-500 shrink-0 mt-0.5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                            </svg>
+                                            <p class="leading-relaxed">Opsi pengantaran terkunci. Tambah jumlah beli hingga total minimal <strong>Rp 10.000</strong> agar kurir bisa diantar.</p>
+                                        </div>
+
+                                        {{-- ALERT BARU: Wilayah Pengantaran Maksimal Perumahan Pangauban Silih Asih --}}
+                                        <div x-show="delivery === 'antar' && bisaDiantar" x-transition class="bg-blue-50 border border-blue-100 rounded-xl p-4 text-xs text-blue-800 space-y-2">
+                                            <div class="flex items-center gap-2 font-bold">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-blue-600 shrink-0">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 111.083 1.083l-.02.041m-1.104-1.104l.02-.041m1.104 1.104l-.041.02M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25s-7.5-4.108-7.5-11.25a7.5 7.5 0 1115 0z" />
+                                                </svg>
+                                                <span>Informasi Wilayah Pengantaran</span>
+                                            </div>
+                                            <p class="pl-6 leading-relaxed text-slate-600">
+                                                Pengantaran kurir hanya melayani area <strong class="text-slate-900">Perumahan Pangauban Silih Asih</strong> (Maks. 2 KM). Jika lokasi Anda berada di luar area tersebut, harap hubungi Admin terlebih dahulu melalui WhatsApp <strong class="text-blue-700">0812-1319-2110</strong> sebelum mengirim pesanan.
+                                            </p>
+                                        </div>
+
+                                        {{-- INFORMASI ALAMAT TOKO (Hanya Muncul Jika Ambil Sendiri) --}}
+                                        <div x-show="delivery === 'ambil'" x-cloak x-transition class="bg-indigo-50 border border-indigo-100 rounded-xl p-4 text-xs text-indigo-800 space-y-2">
+                                            <div class="flex items-center gap-2 font-bold">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-indigo-600 shrink-0">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25s-7.5-4.108-7.5-11.25a7.5 7.5 0 1115 0z" />
+                                                </svg>
+                                                <span>Lokasi Pengambilan Barang (Toko ChoiATK)</span>
+                                            </div>
+                                            <p class="pl-6 leading-relaxed text-slate-600">
+                                                Silakan ambil pesanan Anda langsung di lokasi kami: <strong class="text-slate-900">Perumahan Pangauban Silih Asih Blok L-10, Jl. Mawar, Kec. Batujajar, Kab. Bandung Barat.</strong>
+                                            </p>
+                                        </div>
+
+                                        {{-- Input Alamat / Catatan Dinamis --}}
+                                        <div class="pt-2">
+                                            <label id="label-catatan" class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2.5">
+                                                {{-- PERBAIKAN 1: Pakai 'antar' (bukan diantar) dan ganti teks jadi ALAMAT LENGKAP --}}
+                                                <span x-text="delivery === 'antar' ? 'ALAMAT LENGKAP' : 'Catatan Tambahan Kasir'"></span>
+                                            </label>
+
+                                            {{-- PERBAIKAN 2: Ubah 'required' jadi ':required="delivery === \'antar\'"' --}}
+                                            <textarea name="catatan" id="catatan" rows="3"
+                                                :required="delivery === 'antar'"
+                                                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-slate-300 resize-none transition"
+                                                :placeholder="delivery === 'antar'
+                                                    ? 'TULIS ALAMAT BLOK/NO RUMAH ANDA DISINI! Contoh: Perum Pangauban Silih Asih, Blok L No. 10.'
+                                                    : 'Contoh: Tolong disiapkan besok pagi di lobi depan...'"></textarea>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -292,6 +320,59 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- Modal Konfirmasi Akhir (Alpine.js) --}}
+                <template x-teleport="body">
+                    <div x-show="confirmModal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4" style="display: none;" x-cloak>
+
+                        {{-- Backdrop Gelap --}}
+                        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
+                             x-show="confirmModal"
+                             x-transition:enter="transition ease-out duration-300"
+                             x-transition:enter-start="opacity-0"
+                             x-transition:enter-end="opacity-100"
+                             x-transition:leave="transition ease-in duration-200"
+                             x-transition:leave-start="opacity-100"
+                             x-transition:leave-end="opacity-0"
+                             @click="confirmModal = false"></div>
+
+                        {{-- Kotak Modal Utama --}}
+                        <div class="relative bg-white rounded-2xl p-6 md:p-8 max-w-sm w-full shadow-2xl text-center z-10"
+                             x-show="confirmModal"
+                             x-transition:enter="transition ease-out duration-300"
+                             x-transition:enter-start="opacity-0 translate-y-8 scale-95"
+                             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                             x-transition:leave="transition ease-in duration-200"
+                             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                             x-transition:leave-end="opacity-0 translate-y-8 scale-95">
+
+                            {{-- Ikon Peringatan/Validasi --}}
+                            <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-5 text-blue-600 border border-blue-100 shadow-inner">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8 animate-bounce">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+
+                            <h3 class="text-lg font-black text-slate-900 mb-2 tracking-tight">Apakah Anda Yakin?</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-6 font-medium">
+                                Pastikan alamat dan metode pembayaran sudah benar. Setelah tombol ini ditekan, pesanan akan dikirim ke sistem toko dan <strong class="text-slate-800">tidak dapat dibatalkan</strong> oleh pelanggan.
+                            </p>
+
+                            {{-- Tombol Aksi --}}
+                            <div class="grid grid-cols-2 gap-3">
+                                <button type="button" @click="confirmModal = false"
+                                        class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-xl text-sm transition">
+                                    Cek Lagi
+                                </button>
+                                {{-- Tombol Eksekusi Asli yang me-submit form #orderForm --}}
+                                <button type="button" onclick="document.getElementById('orderForm').submit()"
+                                        class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm transition shadow-lg shadow-blue-500/20 active:scale-95">
+                                    Ya, Proses!
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
 
             </div>
 

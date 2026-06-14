@@ -7,9 +7,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#F8FAFC] min-h-screen text-slate-800 antialiased">
-    <div class="flex min-h-screen">
+    <div class="flex h-screen overflow-hidden">
         <x-sidebar-admin/>
-        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
             <x-navbar-admin/>
 
             <main class="p-6 md:p-8 space-y-6 animate-page-load">
@@ -316,6 +316,7 @@
                                     </button>
 
                                     {{-- 2. Pop-up Modal Konfirmasi Berwarna Tema Biru POS --}}
+                                    <template x-teleport="body">
                                     <div x-show="openSaveModal"
                                         x-transition:enter="transition ease-out duration-200"
                                         x-transition:enter-start="opacity-0"
@@ -323,7 +324,7 @@
                                         x-transition:leave="transition ease-in duration-150"
                                         x-transition:leave-start="opacity-100"
                                         x-transition:leave-end="opacity-0"
-                                        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm"
+                                        class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm"
                                         style="display: none;">
 
                                         {{-- Kotak Putih Modal --}}
@@ -365,6 +366,7 @@
 
                                         </div>
                                     </div>
+                                    </template>
                                 </div>
                             </div>
                         </div>

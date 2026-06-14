@@ -12,9 +12,9 @@
     </style>
 </head>
 <body class="bg-[#F8FAFC] min-h-screen text-slate-800 antialiased">
-    <div class="flex min-h-screen">
+    <div class="flex h-screen overflow-hidden">
         <x-sidebar-pelanggan/>
-        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
             <x-navbar-pelanggan/>
 
             <main class="p-6 md:p-8 space-y-6 animate-page-load">
@@ -173,7 +173,7 @@
                                         {{-- Input Alamat / Catatan Dinamis --}}
                                         <div>
                                             <label id="label-catatan" class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">
-                                                <span x-text="delivery === 'diantar' ? 'Alamat Lengkap Rumah *' : 'Catatan Tambahan Kasir (Opsional)'"></span>
+                                                <span x-text="delivery === 'diantar' ? 'Alamat Lengkap Rumah' : 'Catatan Tambahan Kasir'"></span>
                                             </label>
                                             <textarea name="catatan" id="catatan" rows="3" required
                                                 :placeholder="delivery === 'diantar' ? 'TULIS NOMOR RUMAH / BLOK ANDA. Contoh: Perum Pangauban Silih Asih, Blok C3 No. 12.' : 'Contoh: Tolong barangnya dipisah plastik, diambil sepulang sekolah...'"
@@ -257,7 +257,8 @@
                     </form>
 
                     {{-- Modal Konfirmasi Akhir (Alpine.js) --}}
-                    <div x-show="confirmModal" class="fixed inset-0 z-[99] flex items-center justify-center overflow-y-auto px-4" style="display: none;" x-cloak>
+                    <template x-teleport="body">
+                    <div x-show="confirmModal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4" style="display: none;" x-cloak>
 
                         {{-- Backdrop Gelap --}}
                         <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
@@ -271,7 +272,7 @@
                              @click="confirmModal = false"></div>
 
                         {{-- Kotak Modal Utama --}}
-                        <div class="relative bg-white rounded-2xl p-6 md:p-8 max-w-sm w-full shadow-2xl text-center"
+                        <div class="relative bg-white rounded-2xl p-6 md:p-8 max-w-sm w-full shadow-2xl text-center z-10"
                              x-show="confirmModal"
                              x-transition:enter="transition ease-out duration-300"
                              x-transition:enter-start="opacity-0 translate-y-8 scale-95"
@@ -306,6 +307,7 @@
                             </div>
                         </div>
                     </div>
+                    </template>
 
                 </div>
 

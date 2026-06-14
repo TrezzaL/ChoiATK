@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar — ChoiATK | Premium Registration</title>
+    <title>Daftar � ChoiATK | Premium Registration</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         body {
@@ -39,9 +39,9 @@
               if (/[0-9]/.test(this.password)) points++;
               if (/[^A-Za-z0-9]/.test(this.password)) points++;
 
-              if (points <= 1) return { score: 1, label: 'Lemah ❌', color: 'bg-red-500', width: 'w-1/4', text: 'text-red-500' };
-              if (points === 2) return { score: 2, label: 'Sedang ⚠️', color: 'bg-amber-500', width: 'w-2/4', text: 'text-amber-500' };
-              if (points >= 3) return { score: 3, label: 'Kuat  Istimewa 🔒', color: 'bg-emerald-500', width: 'w-full', text: 'text-emerald-500' };
+              if (points <= 1) return { score: 1, label: 'Lemah ?', color: 'bg-red-500', width: 'w-1/4', text: 'text-red-500' };
+              if (points === 2) return { score: 2, label: 'Sedang ??', color: 'bg-amber-500', width: 'w-2/4', text: 'text-amber-500' };
+              if (points >= 3) return { score: 3, label: 'Kuat  Istimewa ??', color: 'bg-emerald-500', width: 'w-full', text: 'text-emerald-500' };
           }
       }">
     <div class="flex min-h-screen">
@@ -124,8 +124,8 @@
                                        name="password"
                                        x-model="password"
                                        required
-                                       class="w-full pl-11 pr-10 py-3 bg-white border border-slate-200 rounded-xl text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-200"
-                                       placeholder="••••••••">
+                                       class="w-full pl-11 pr-10 py-3 bg-white border border-slate-200 rounded-xl text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-200 password-input"
+                                       placeholder="Masukkan password">
 
                                 {{-- Tombol Toggle Mata --}}
                                 <button type="button" @click="showPass = !showPass" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
@@ -187,8 +187,8 @@
                                 <input :type="showConfirmPass ? 'text' : 'password'"
                                        name="password_confirmation"
                                        required
-                                       class="w-full pl-11 pr-10 py-3 bg-white border border-slate-200 rounded-xl text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-200"
-                                       placeholder="••••••••">
+                                       class="w-full pl-11 pr-10 py-3 bg-white border border-slate-200 rounded-xl text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-200 password-input"
+                                       placeholder="Masukkan password">
 
                                 {{-- Tombol Toggle Mata Konfirmasi --}}
                                 <button type="button" @click="showConfirmPass = !showConfirmPass" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
@@ -252,13 +252,14 @@
     </div>
 
     {{-- KELOMPOK MODAL POP-UP --}}
-    <div x-show="termsModal" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;" @keydown.escape.window="termsModal = false">
+    <template x-teleport="body">
+    <div x-show="termsModal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4" style="display: none;" @keydown.escape.window="termsModal = false">
         <div x-show="termsModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" @click="termsModal = false"></div>
         <div class="flex min-h-full items-center justify-center p-4">
             <div x-show="termsModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95 translate-y-4" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100 translate-y-0" x-transition:leave-end="opacity-0 scale-95 translate-y-4" class="relative w-full max-w-lg bg-white p-6 rounded-2xl border border-slate-100 shadow-2xl text-left transition-all">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
                     <h3 class="text-lg font-bold text-slate-900">Syarat & Ketentuan ChoiATK</h3>
-                    <button type="button" @click="termsModal = false" class="text-slate-400 hover:text-slate-600 p-1.5 hover:bg-slate-50 rounded-xl transition">✕</button>
+                    <button type="button" @click="termsModal = false" class="text-slate-400 hover:text-slate-600 p-1.5 hover:bg-slate-50 rounded-xl transition">?</button>
                 </div>
                 <div class="max-h-72 overflow-y-auto text-sm text-slate-600 space-y-3 pr-1 leading-relaxed">
                     <p class="font-semibold text-slate-800">1. Ketentuan Umum</p>
@@ -275,6 +276,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </template>
 </body>
 </html>

@@ -7,9 +7,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 antialiased">
-    <div class="flex min-h-screen">
+    <div class="flex h-screen overflow-hidden">
         <x-sidebar-admin/>
-        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
             <x-navbar-admin/>
 
             <main class="p-6 md:p-8 space-y-6 animate-page-load">
@@ -201,6 +201,7 @@
                                         </button>
 
                                         {{-- 2. Pop-up Modal Konfirmasi Premium --}}
+                                        <template x-teleport="body">
                                         <div x-show="openConfirmModal"
                                             x-transition:enter="transition ease-out duration-200"
                                             x-transition:enter-start="opacity-0"
@@ -252,6 +253,7 @@
 
                                             </div>
                                         </div>
+                                        </template>
                                     </div>
 
                                     {{-- Tolak Toggle --}}
@@ -310,6 +312,7 @@
                                         </button>
 
                                         {{-- 2. Pop-up Modal Konfirmasi Berwarna Tema Emerald Sukses --}}
+                                        <template x-teleport="body">
                                         <div x-show="openCompleteModal"
                                             x-transition:enter="transition ease-out duration-200"
                                             x-transition:enter-start="opacity-0"
@@ -361,6 +364,7 @@
 
                                             </div>
                                         </div>
+                                        </template>
                                     </div>
                                 </div>
                             </div>

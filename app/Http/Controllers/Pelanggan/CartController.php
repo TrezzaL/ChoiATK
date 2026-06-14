@@ -57,7 +57,6 @@ class CartController extends Controller
             $cartItem->save();
         } else {
             // JALUR BYPASS MASS-ASSIGNMENT: Menggunakan instansiasi objek manual
-            // Ini menjamin angka 3 tidak akan direset jadi 1 meskipun lupa setting $fillable di Model
             $newCart = new Cart();
             $newCart->user_id = Auth::id();
             $newCart->product_id = $request->product_id;
@@ -77,16 +76,16 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
     }
 
-    public function update(Request $request, $id) // 1. Ubah parameter jadi $id
+    public function update(Request $request, $id)
     {
         $request->validate([
             'quantity' => 'required|integer|min:1',
         ]);
 
-        // 2. Cari data keranjang secara MANUAL (Anti Gagal)
+        // Cari data keranjang secara MANUAL (Anti Gagal di Hosting)
         $cart = Cart::findOrFail($id);
 
-        // 3. Pengecekan tanpa strict mode (pakai != saja)
+        // Pengecekan tanpa strict mode
         if ($cart->user_id != Auth::id()) {
             abort(403, 'Ini bukan keranjangmu bro!');
         }
@@ -97,12 +96,12 @@ class CartController extends Controller
         return redirect()->route('pelanggan.cart.index')->with('success', 'Jumlah produk berhasil diperbarui!');
     }
 
-    public function destroy($id) // 1. Ubah parameter jadi $id
+    public function destroy($id)
     {
-        // 2. Cari data keranjang secara MANUAL
+        // Cari data keranjang secara MANUAL
         $cart = Cart::findOrFail($id);
 
-        // 3. Pengecekan
+        // Pengecekan
         if ($cart->user_id != Auth::id()) {
             abort(403, 'Ini bukan keranjangmu bro!');
         }
@@ -129,20 +128,22 @@ class CartController extends Controller
             return $item->product->harga * $item->quantity;
         });
 
-        // 4. Oper data ke halaman checkout blade yang akan kita buat setelah ini
+        // 4. Oper data ke halaman checkout blade
         return view('pelanggan.checkout', compact('cartItems', 'totalBelanja'));
     }
 
     public function checkoutStore(Request $request)
     {
-        // 1. Validasi request penyerahan & pembayaran
+        // 1. Validasi request penyerahan & pembayaran (PERBAIKAN: required_if terpasang)
         $request->validate([
             'metode_bayar'       => 'required|in:cash,hutang',
             'metode_pengantaran' => 'required|in:ambil,diantar',
-            'catatan'            => 'nullable|string|max:500',
+            'catatan'            => 'required_if:metode_pengantaran,diantar|nullable|string|max:500',
+        ], [
+            'catatan.required_if' => 'Alamat lengkap wajib diisi jika pesanan minta diantar kurir!'
         ]);
 
-        $user = auth()->user(); // Ambil data user yang sedang login
+        $user = auth()->user();
         $cartItems = Cart::where('user_id', $user->id)->with('product')->get();
 
         if ($cartItems->isEmpty()) {
@@ -177,7 +178,7 @@ class CartController extends Controller
             if ($request->metode_pengantaran == 'diantar') {
                 $catatanFinal = "[DIANTAR TOKO] Alamat: " . $request->catatan;
             } else {
-                $catatanFinal = "[AMBIL DI TOKO] " . $request->catatan;
+                $catatanFinal = "[AMBIL DI TOKO] " . ($request->catatan ?? 'Tidak ada catatan');
             }
 
             $order = \App\Models\Order::create([
